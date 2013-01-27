@@ -30,7 +30,8 @@ class Tare(Info):
         return u'%s' % (self.name)
 
 class Brand(Info): # kama,oleyna
-    pass
+    image_tumboral = models.ImageField(upload_to = 'images',blank=True,null=True)
+    image=models.ImageField(upload_to = 'images',blank=True,null=True)
 
 class ProductCategory(Info): #oliya, maslo
     pass
@@ -45,14 +46,19 @@ class Product(Info):
     storagecondition=models.ForeignKey(StorageCondition)
 
 class ConsumerCategory(Info):
-    pass
+    image_tumboral = models.ImageField(upload_to = 'images',blank=True,null=True)
+    image=models.ImageField(upload_to = 'images',blank=True,null=True)
 
 class ConsumerSubCategory(Info):
-    pass
+    image_tumboral = models.ImageField(upload_to = 'images',blank=True,null=True)
+    image=models.ImageField(upload_to = 'images',blank=True,null=True)
+    
 
 class ConsumerInfo(Info):
-    consumercategory = models.ManyToManyField(ConsumerCategory)
-    consumersubcategory = models.ManyToManyField(ConsumerSubCategory)
+    image_tumboral = models.ImageField(upload_to = 'images',blank=True,null=True)
+    image=models.ImageField(upload_to = 'images',blank=True,null=True)
+    consumercategory = models.ForeignKey(ConsumerCategory)
+    consumersubcategory = models.ForeignKey(ConsumerSubCategory)
 
 
 class Translation(models.Model):
