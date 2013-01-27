@@ -1,23 +1,34 @@
 from django.db import models
 from django.contrib import admin
 import datetime
+
+from django.utils.translation import get_language
 # Create your models here.
 
 
+class Language(models.Model):
+    name=models.CharField(max_length=25)
+    code=models.CharField(max_length=4)
+
+
+class Info(models.Model):
+    @property
+    def title(self):
+        lang = get_language()
+        translation = self.translation_set.filter(lang__code=lang[:2])
+        if translation.count():
+            return translation[0].title
+        return _('No translation')
+
+
 class Translation(models.Model):
-    date=models.DateField(default=datetime.date(2001,01,01))
+    info=models.ForeignKey(Info)
     title=models.CharField(max_length=250)
     description=models.TextField()
-    title_ua=models.CharField(max_length=250)
-    description_ua=models.TextField()
-    title_en=models.CharField(max_length=250)
-    description_en=models.TextField()
+    lang=models.ForeignKey(Language)
     
-class Info(models.Model):
-    translate=models.ForeignKey(Translation)
-
-
 class News(Info):
+    date=models.DateField()
     pass
 
 class Adress(Info):
