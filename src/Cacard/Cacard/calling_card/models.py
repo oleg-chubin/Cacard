@@ -1,13 +1,11 @@
 from django.db import models
 from django.contrib import admin
+import datetime
 # Create your models here.
 
 
-class Info(models.Model):
-    pass
-
-class Translation(Info):
-    date=models.DateField(default='01.01.2013')
+class Translation(models.Model):
+    date=models.DateField(default=datetime.date(2001,01,01))
     title=models.CharField(max_length=250)
     description=models.TextField()
     title_ua=models.CharField(max_length=250)
@@ -15,21 +13,24 @@ class Translation(Info):
     title_en=models.CharField(max_length=250)
     description_en=models.TextField()
     
+class Info(models.Model):
+    translate=models.ForeignKey(Translation)
 
-class News(Translation):
-    class Meta:
-        ordering = ('date',)
 
-class Adress(Translation):
+class News(Info):
+    pass
+
+class Adress(Info):
     type_adr=models.CharField(max_length=50)
 
 
-
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ('date','title')
+    pass
     
 class AdressAdmin(admin.ModelAdmin):
-    list_display = ('type_adr','title')
+    list_display = ('type_adr',)
+
+
 
 
 admin.site.register(News,NewsAdmin)
