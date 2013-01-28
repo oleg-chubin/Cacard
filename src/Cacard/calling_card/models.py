@@ -9,6 +9,8 @@ from django.utils.translation import get_language
 class Language(models.Model):
     name=models.CharField(max_length=25)
     code=models.CharField(max_length=4)
+    def __unicode__(self):
+        return u'%s' % (self.name)
 
 
 class Info(models.Model):
@@ -18,7 +20,45 @@ class Info(models.Model):
         translation = self.translation_set.filter(lang__code=lang[:2])
         if translation.count():
             return translation[0].title
-        return _('No translation')
+        return ('No translation')
+
+class Tare(Info):
+    name=models.CharField(max_length=25)
+    capacity=models.IntegerField()
+    in_box=models.IntegerField()
+    def __unicode__(self):
+        return u'%s' % (self.name)
+
+class Brand(Info): # kama,oleyna
+    image_tumboral = models.ImageField(upload_to = 'images',blank=True,null=True)
+    image=models.ImageField(upload_to = 'images',blank=True,null=True)
+
+class ProductCategory(Info): #oliya, maslo
+    pass
+
+class StorageCondition(Info):
+    pass
+
+class Product(Info):
+    tare=models.ForeignKey(Tare)
+    brand=models.ForeignKey(Brand)
+    productcategory=models.ForeignKey(ProductCategory)
+    storagecondition=models.ForeignKey(StorageCondition)
+
+class ConsumerCategory(Info):
+    image_tumboral = models.ImageField(upload_to = 'images',blank=True,null=True)
+    image=models.ImageField(upload_to = 'images',blank=True,null=True)
+
+class ConsumerSubCategory(Info):
+    image_tumboral = models.ImageField(upload_to = 'images',blank=True,null=True)
+    image=models.ImageField(upload_to = 'images',blank=True,null=True)
+    
+
+class ConsumerInfo(Info):
+    image_tumboral = models.ImageField(upload_to = 'images',blank=True,null=True)
+    image=models.ImageField(upload_to = 'images',blank=True,null=True)
+    consumercategory = models.ForeignKey(ConsumerCategory)
+    consumersubcategory = models.ForeignKey(ConsumerSubCategory)
 
 
 class Translation(models.Model):
@@ -35,14 +75,76 @@ class Adress(Info):
     type_adr=models.CharField(max_length=50)
 
 
+class TranslationInline(admin.TabularInline):
+    model = Translation
+
 class NewsAdmin(admin.ModelAdmin):
-    pass
-    
+    inlines = (
+        TranslationInline,
+    )
+    list_display = ('date','title')
+
 class AdressAdmin(admin.ModelAdmin):
-    list_display = ('type_adr',)
+    inlines = (
+        TranslationInline,
+    )
+    list_display = ('type_adr','title')
 
 
+class TareAdmin(admin.ModelAdmin):
+    inlines = (
+        TranslationInline,
+    )
+    list_display = ('title',)
+
+class BrandAdmin(admin.ModelAdmin):
+    inlines = (
+        TranslationInline,
+    )
+    list_display = ('title',)
 
 
+class ProductCategoryAdmin(admin.ModelAdmin):
+    inlines = (
+        TranslationInline,
+    )
+    list_display = ('title',)
+
+class ProductAdmin(admin.ModelAdmin):
+    inlines = (
+        TranslationInline,
+    )
+    list_display = ('title',)
+
+class ConsumerCategoryAdmin(admin.ModelAdmin):
+    inlines = (
+        TranslationInline,
+    )
+    list_display = ('title',)
+
+class ConsumerSubCategoryAdmin(admin.ModelAdmin):
+    inlines = (
+        TranslationInline,
+    )
+    list_display = ('title',)
+
+class ConsumerInfoAdmin(admin.ModelAdmin):
+    inlines = (
+        TranslationInline,
+    )
+    list_display = ('title',)
+    
+class LanguageAdmin(admin.ModelAdmin):
+    list_display = ('name','code')
+
+    
 admin.site.register(News,NewsAdmin)
 admin.site.register(Adress,AdressAdmin)
+admin.site.register(Language,LanguageAdmin)
+admin.site.register(Tare,TareAdmin)
+admin.site.register(Brand,BrandAdmin)
+admin.site.register(ProductCategory,ProductCategoryAdmin)
+admin.site.register(Product,ProductAdmin)
+admin.site.register(ConsumerCategory,ConsumerCategoryAdmin)
+admin.site.register(ConsumerSubCategory,ConsumerSubCategoryAdmin)
+admin.site.register(ConsumerInfo,ConsumerInfoAdmin)
