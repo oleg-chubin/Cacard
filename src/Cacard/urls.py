@@ -5,9 +5,9 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-                       
+
     # Examples:
-    # url(r'^$', 'Cacard.views.home', name='home'),
+    url(r'^$', 'Cacard.calling_card.views.home', name='home'),
     # url(r'^Cacard/', include('Cacard.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
