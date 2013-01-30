@@ -1,0 +1,14 @@
+{% extends "navs_bar.html" %}
+
+{% block content %}
+    <div>
+        {% for new in News %}
+            <h2>{{ new.date }}</h2>
+            <p>{{ new.title }}</p>
+            <p>{{ new.description }}</p>
+    	
+        {% endfor %}
+</div>
+{% endblock %}
+
+	

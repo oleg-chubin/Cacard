@@ -8,6 +8,8 @@ urlpatterns = patterns('',
 
     # Examples:
     url(r'^$', 'Cacard.calling_card.views.home', name='home'),
+    url(r'^news/$', 'Cacard.calling_card.views.news', name='news'),
+    
     # url(r'^Cacard/', include('Cacard.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

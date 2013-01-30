@@ -21,6 +21,15 @@ class Info(models.Model):
         if translation.count():
             return translation[0].title
         return ('No translation')
+    @property
+    def description(self):
+        lang = get_language()
+        translation = self.translation_set.filter(lang__code=lang[:2])
+        if translation.count():
+            return translation[0].description
+        return ('No translation')
+
+
 
 class Tare(Info):
     name=models.CharField(max_length=25)
@@ -69,7 +78,8 @@ class Translation(models.Model):
     
 class News(Info):
     date=models.DateField()
-    pass
+    class Meta:
+        ordering = ('-date',)
 
 class Adress(Info):
     type_adr=models.CharField(max_length=50)
