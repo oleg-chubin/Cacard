@@ -43,13 +43,29 @@
       {% endwith %}
     {% endfor %}
     </div>
-
-    <div class="page-header">
-        <h1></h1>
+<div class="navbar navbar-static-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <ul class="nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="/news">News</a></li>
+      </ul>
     </div>
-    {% block tabs %}{% endblock tabs %}
+  </div>
+</div>
+<div class="row">
+  <div class="span2">
+    {% block tabs %}
+
+    {% endblock tabs %}
+  </div>
+  <div class="span8">
     {% block content %}
     {% endblock content %}
+  </div>
+</div>
 
     <footer>
         <p class="right"><a href="/">Return to Home</a></p>
