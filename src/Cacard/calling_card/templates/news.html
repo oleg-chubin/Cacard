@@ -1,7 +1,8 @@
 {% extends "navs_bar.html" %}
-
+{% load i18n  %}
 {% block content %}
-    <div id="news">
+
+<div id="news">
         
         <table class="table table-striped">
         <tr><td><h2> Новости нашего городка </h2></td></tr>
@@ -14,8 +15,27 @@
     	    </td>
     	    </tr>
         {% endfor %}
-        </table>
-</div>
+<tr><td>
+    
+    <div class="pagination">
+       <ul>
+        {% if News.has_previous %}
+          <li class="previous">
+          <a href="?page={{ News.previous_page_number }}">{% trans "Previous" %}</a>
+          </li>
+        
+        {% endif %}
+        
+        <li class="active"><span>Страница {{ News.number }} из {{ News.paginator.num_pages }}</span></li>  
+        
+        {% if News.has_next %}
+        <li class="next">
+        <a href="?page={{ News.next_page_number }}">{% trans "Next" %}</a>
+        </li>
+        
+        {% endif %}  
+        
+    </div>
 {% endblock %}
 
 	
