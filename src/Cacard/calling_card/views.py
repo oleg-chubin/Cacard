@@ -4,14 +4,17 @@ from Cacard.calling_card.models import News
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
+
 def home(request):
-    return render_to_response("about.html", {})
+    return render_to_response("about.html", {'menu_item': "HOME"})
+
 
 def about(request):
-    return render_to_response("about.html", {})
+    return render_to_response("about.html", {'menu_item': "ABOUT"})
 
 
 def news(request):
+
     news_to_view=News.objects.all()
     paginator = Paginator(news_to_view, 2) 
     page = request.GET.get('page')
