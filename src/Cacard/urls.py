@@ -8,6 +8,7 @@ urlpatterns = patterns('',
 
     # Examples:
     url(r'^$', 'Cacard.calling_card.views.home', name='home'),
+    url(r'^about$', 'Cacard.calling_card.views.about', name='about'),
     url(r'^news/$', 'Cacard.calling_card.views.news', name='news'),
     
     # url(r'^Cacard/', include('Cacard.foo.urls')),

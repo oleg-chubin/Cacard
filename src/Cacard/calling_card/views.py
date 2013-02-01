@@ -5,6 +5,10 @@ from Cacard.calling_card.models import News
 def home(request):
     return render_to_response("about.html", {})
 
+def about(request):
+    return render_to_response("about.html", {})
+
+
 def news(request):
    
     return render_to_response("news.html", {'News':News.objects.all()})

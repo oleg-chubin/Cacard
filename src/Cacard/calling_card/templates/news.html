@@ -1,13 +1,20 @@
 {% extends "navs_bar.html" %}
 
 {% block content %}
-    <div>
+    <div id="news">
+        
+        <table class="table table-striped">
+        <tr><td><h2> Новости нашего городка </h2></td></tr>
         {% for new in News %}
-            <h2>{{ new.date }}</h2>
-            <p>{{ new.title }}</p>
-            <p>{{ new.description }}</p>
-    	
+            <tr>
+            	<td>
+            		<h3>{{ new.date }}</h3>
+            		<p  class="text-success">{{ new.title }}</p>
+            		<p>{{ new.description }}</p>
+    	    </td>
+    	    </tr>
         {% endfor %}
+        </table>
 </div>
 {% endblock %}
 
