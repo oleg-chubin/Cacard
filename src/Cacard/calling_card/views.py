@@ -2,13 +2,16 @@
 from django.shortcuts import render_to_response
 from Cacard.calling_card.models import News
 
+
 def home(request):
-    return render_to_response("about.html", {})
+    return render_to_response("about.html", {'menu_item': "HOME"})
+
 
 def about(request):
-    return render_to_response("about.html", {})
+    return render_to_response("about.html", {'menu_item': "ABOUT"})
 
 
 def news(request):
-   
-    return render_to_response("news.html", {'News':News.objects.all()})
+    context = {'News':News.objects.all(),
+               'menu_item': "NEWS"}
+    return render_to_response("news.html", context)
