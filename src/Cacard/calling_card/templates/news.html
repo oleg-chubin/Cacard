@@ -13,8 +13,8 @@
          </div>
       {% endfor %}
     
-    <div class="pagination">
-       <ul>
+    <div>
+       <ul class="pager">
         {% if News.has_previous %}
           <li class="previous">
           <a href="?page={{ News.previous_page_number }}">{% trans "Previous" %}</a>
