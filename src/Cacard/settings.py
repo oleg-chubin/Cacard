@@ -103,10 +103,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'Cacard.urls'
+ROOT_URLCONF = 'urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'Cacard.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 
 TEMPLATE_DIRS = (
@@ -134,7 +134,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Cacard.calling_card',
+    'calling_card',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -170,4 +170,4 @@ LOGGING = {
     }
 }
 
-from .local_settings import *
+from local_settings import *

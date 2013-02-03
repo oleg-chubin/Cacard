@@ -4,13 +4,12 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('calling_card.views',
+urlpatterns = patterns('',
 
     # Examples:
-    url(r'^$', 'home', name='home'),
-    url(r'^about$', 'about', name='about'),
-    url(r'^product$', 'product', name='product'),
-    url(r'^news/$', 'news', name='news'),
+    url(r'^$', 'Cacard.calling_card.views.home', name='home'),
+    url(r'^about$', 'Cacard.calling_card.views.about', name='about'),
+    url(r'^news/$', 'Cacard.calling_card.views.news', name='news'),
     
     # url(r'^Cacard/', include('Cacard.foo.urls')),
 

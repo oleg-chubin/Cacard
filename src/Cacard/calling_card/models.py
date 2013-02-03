@@ -34,19 +34,23 @@ class Info(models.Model):
 class Tare(Info):
     name=models.CharField(max_length=25)
     capacity=models.IntegerField()
-    in_box=models.IntegerField()
+    in_box=models.IntegerField('Max count in box')
     def __unicode__(self):
         return u'%s' % (self.name)
 
 class Brand(Info): # kama,oleyna
     image_tumboral = models.ImageField(upload_to = 'images',blank=True,null=True)
     image=models.ImageField(upload_to = 'images',blank=True,null=True)
+    def __unicode__(self):
+        return u'%s' % (self.title)
 
 class ProductCategory(Info): #oliya, maslo
-    pass
+    def __unicode__(self):
+        return u'%s' % (self.title)
 
 class StorageCondition(Info):
-    pass
+    def __unicode__(self):
+        return u'%s' % (self.title)
 
 class Product(Info):
     tare=models.ForeignKey(Tare)
@@ -107,6 +111,14 @@ class TareAdmin(admin.ModelAdmin):
     )
     list_display = ('title',)
 
+
+class StorageConditionAdmin(admin.ModelAdmin):
+    inlines = (
+        TranslationInline,
+    )
+    list_display = ('title',)
+
+
 class BrandAdmin(admin.ModelAdmin):
     inlines = (
         TranslationInline,
@@ -158,3 +170,4 @@ admin.site.register(Product,ProductAdmin)
 admin.site.register(ConsumerCategory,ConsumerCategoryAdmin)
 admin.site.register(ConsumerSubCategory,ConsumerSubCategoryAdmin)
 admin.site.register(ConsumerInfo,ConsumerInfoAdmin)
+admin.site.register(StorageCondition,StorageConditionAdmin)
