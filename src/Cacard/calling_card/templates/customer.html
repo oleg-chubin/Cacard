@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load i18n  %}
+
+{% block tabs %}
+
+  <div "tabs" style="float: left;width: 150px">
+    <ul class="nav nav-list">
+    	<li class="nav-header">{% trans "Полезная информация" %}</li>
+    {% for item in categorys %}
+     <li {% if prod_item == item.id  %}class="active"{% endif %}>
+     	<a href="?select={{ item.id }}">{{ item.title }} </a></li>
+    {% endfor %}
+    </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+   
+
+<div id="To consumer">
+        
+      {% for item in context %}
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.description }}</p>
+        
+      {% endfor %}
+<div>
+       <ul class="pager">
+        {% if context.has_previous %}
+          <li class="previous">
+          <a href="?page={{ context.previous_page_number }}">{% trans "Previous" %}</a>
+          </li>
+        
+        {% endif %}
+        
+        <li class="active"><span>Страница {{ context.number }} из {{ context.paginator.num_pages }}</span></li>  
+        
+        {% if context.has_next %}
+        <li class="next">
+        <a href="?page={{ context.next_page_number }}">{% trans "Next" %}</a>
+        </li>
+        
+        {% endif %}  
+        
+    </div>
+
+              
+</div>
+{% endblock %}
+
+
