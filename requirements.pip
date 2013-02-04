@@ -3,9 +3,11 @@ Django>1.4
 PyYAML==3.09
 South==0.7.3
 psycopg2==2.4
+PIL
 MySQL-python
 simplejson==2.3.0
 werkzeug==0.6.2
+PIL==1.1.7
 ipdb
 git+https://github.com/pmarti/python-messaging.git@master#egg=python_messaging
 

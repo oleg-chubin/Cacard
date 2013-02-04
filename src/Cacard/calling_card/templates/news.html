@@ -1,14 +1,37 @@
-{% extends "navs_bar.html" %}
-
+{% extends "base.html" %}
+{% load i18n  %}
 {% block content %}
+
+<div id="news">
+        
+      <h2> {% trans "News" %} </h2>
+      {% for new in News %}
+        <h3>{{ new.title }}</h3>
+        {{ new.description }}
+        <div class="row">
+         <div class="span2 offset6"><span class="label">{{ new.date }}</span></div>
+         </div>
+      {% endfor %}
+    
     <div>
-        {% for new in News %}
-            <h2>{{ new.date }}</h2>
-            <p>{{ new.title }}</p>
-            <p>{{ new.description }}</p>
-    	
-        {% endfor %}
-</div>
+       <ul class="pager">
+        {% if News.has_previous %}
+          <li class="previous">
+          <a href="?page={{ News.previous_page_number }}">{% trans "Previous" %}</a>
+          </li>
+        
+        {% endif %}
+        
+        <li class="active"><span>Страница {{ News.number }} из {{ News.paginator.num_pages }}</span></li>  
+        
+        {% if News.has_next %}
+        <li class="next">
+        <a href="?page={{ News.next_page_number }}">{% trans "Next" %}</a>
+        </li>
+        
+        {% endif %}  
+        
+    </div>
 {% endblock %}
 
-	
+
