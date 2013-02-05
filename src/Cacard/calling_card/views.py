@@ -5,9 +5,7 @@ from models import News, Product, Brand, Adress, ConsumerInfo,ConsumerCategory
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from operator import itemgetter
 
-menu_register = set()
-link_register = dict()
-order_register = dict()
+menu_register = {}
 
 def render_to(template):
     def renderer(func):
@@ -21,18 +19,15 @@ def render_to(template):
         return wrapper
     return renderer
 
-def top_level_menu(item,link,order):
-    menu_register.add(item)
-    link_register[item]=link
-    order_register[item]=order
+def top_level_menu(item, link, order):
+    menu_register.setdefault(item, {})
+    menu_register[item].update({'link':link, 'order':order})
     def decorator(func):
-        def wrapper(*args, **kwargs): 
+        def wrapper(*args, **kwargs):
             res = func(*args, **kwargs)
-            res['menu_list'] = [{'name':i, 'active': item==i,'link':link_register[i],'order':order_register[i]} for i in menu_register]
-#            for i in res['menu_list']:
-#                if i['name']==item:
-#                    i['link']=link
-            return sorted(res, key=itemgetter('order'))
+            res['menu_list'] = [{'name':i, 'active': item==i,'link':menu_register[i]['link'],'order':menu_register[i]['order']} for i in menu_register]
+            res['menu_list'].sort(key=itemgetter('order'))
+            return res
         return wrapper
     return decorator
 
