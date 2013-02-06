@@ -8,10 +8,11 @@ urlpatterns = patterns('calling_card.views',
 
     # Examples:
     url(r'^$', 'home', name='home'),
-    url(r'^about$', 'about', name='about'),
-    url(r'^product$', 'product', name='product'),
-    url(r'^contacts$', 'contacts', name='contacts'),
-    url(r'^customer$', 'customer', name='customer'),
+    url(r'^about/$', 'about', name='about'),
+    url(r'^product/$', 'product', name='product'),
+    url(r'^product/(?P<page>\d)/$', 'product', name='product'),
+    url(r'^contacts/$', 'contacts', name='contacts'),
+    url(r'^customer/$', 'customer', name='customer'),
     url(r'^news/$', 'news', name='news'),
     
     # url(r'^Cacard/', include('Cacard.foo.urls')),

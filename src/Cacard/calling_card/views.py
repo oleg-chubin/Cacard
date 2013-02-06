@@ -75,15 +75,14 @@ def customer(request):
 
 @render_to("products.html")
 @top_level_menu("Products","product",3)
-def product(request):
+def product(request, page='0'):
     products=Product.objects.all()
     brands=Brand.objects.all()
-    page = request.GET.get('page')
+#    page = request.GET.get('page')
     if page:
         products = Product.objects.filter(brand=page)
-    else: 
+    else:
         page=0    
-    
     return {'prod_item': int(page),'products': products,'brands':brands}
 
 
