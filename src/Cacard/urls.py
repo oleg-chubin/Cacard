@@ -10,11 +10,11 @@ urlpatterns = patterns('calling_card.views',
     url(r'^$', 'home', name='home'),
     url(r'^about/$', 'about', name='about'),
     url(r'^product/$', 'product', name='product'),
-    url(r'^product/(?P<page>\d{1,4})/$', 'product', name='paged_product'),
+    url(r'^product/(?P<page>\d{1,4})/(?P<prod>\d{1,4})/$', 'product', name='paged_product'),
     url(r'^contacts/$', 'contacts', name='contacts'),
     url(r'^customer/$', 'customer', name='customer'),
     url(r'^news/$', 'news', name='news'),
-    
+
     # url(r'^Cacard/', include('Cacard.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

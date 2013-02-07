@@ -1,11 +1,13 @@
 # Create your views here.
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from models import News, Product, Brand, Adress, ConsumerInfo,ConsumerCategory
+from models import News, Product, Brand, Adress, ConsumerInfo
+from models import ConsumerCategory, ProductCategory
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from operator import itemgetter
 
 menu_register = {}
+
 
 def render_to(template):
     def renderer(func):
@@ -19,47 +21,53 @@ def render_to(template):
         return wrapper
     return renderer
 
+
 def top_level_menu(item, link, order):
     menu_register.setdefault(item, {})
-    menu_register[item].update({'link':link, 'order':order})
+    menu_register[item].update({'link': link, 'order': order})
+
     def decorator(func):
         def wrapper(*args, **kwargs):
             res = func(*args, **kwargs)
-            res['menu_list'] = [{'name':i, 'active': item==i,'link':menu_register[i]['link'],'order':menu_register[i]['order']} for i in menu_register]
+            res['menu_list'] = [{'name': i, 'active': item == i,
+                                 'link': menu_register[i]['link'], 'order': menu_register[i]['order']} for i in menu_register]
             res['menu_list'].sort(key=itemgetter('order'))
             return res
         return wrapper
     return decorator
 
+
 @render_to("about.html")
-@top_level_menu("Home","",1)
+@top_level_menu("Home", "", 1)
 def home(request):
     return  {}
 
 
 @render_to("about.html")
-@top_level_menu("About","about",2)
+@top_level_menu("About", "about", 2)
 def about(request):
     return {}
 
+
 @render_to("contacts.html")
-@top_level_menu("Contacts","contacts",6)
+@top_level_menu("Contacts", "contacts", 6)
 def contacts(request):
-    contacts=Adress.objects.all()
-    return {'contacts':contacts}
+    contacts = Adress.objects.all()
+    return {'contacts': contacts}
+
 
 @render_to("customer.html")
-@top_level_menu("Cusomer","customer",5)
+@top_level_menu("Cusomer", "customer", 5)
 def customer(request):
-    categorys=ConsumerCategory.objects.all()
-    context=ConsumerInfo.objects.filter(consumercategory=categorys[0])
+    categorys = ConsumerCategory.objects.all()
+    context = ConsumerInfo.objects.filter(consumercategory=categorys[0])
     select = request.GET.get('select')
     if select:
         context = ConsumerInfo.objects.filter(consumercategory=select)
-    else: 
-        select=categorys[0].id
+    else:
+        select = categorys[0].id
 
-    paginator = Paginator(context, 2) 
+    paginator = Paginator(context, 2)
     page = request.GET.get('page')
     try:
         cont_to_view = paginator.page(page)
@@ -69,28 +77,26 @@ def customer(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         cont_to_view = paginator.page(paginator.num_pages)
-
-    return {'context':cont_to_view, 'categorys':categorys,'prod_item': int(select)}
+    return {'context': cont_to_view, 'categorys': categorys, 'prod_item': int(select)}
 
 
 @render_to("products.html")
-@top_level_menu("Products","product",3)
-def product(request, page='0'):
-    products=Product.objects.all()
-    brands=Brand.objects.all()
-#    page = request.GET.get('page')
+@top_level_menu("Products", "product", 3)
+def product(request, page='0', prod='0'):
+#    products = Product.objects.all()
+    brands = Brand.objects.all()
+    product_categorys = ProductCategory.objects.all()
     if page:
-        products = Product.objects.filter(brand=page)
-    else:
-        page=0    
-    return {'prod_item': int(page),'products': products,'brands':brands}
+        products = Product.objects.filter(brand = page, productcategory = prod)
+    return {'prod_item': int(page),'prodcat_item': int(prod), 'products': products,
+            'brands': brands, 'product_categorys': product_categorys}
 
 
 @render_to("news.html")
-@top_level_menu("News","news",4)
+@top_level_menu("News", "news", 4)
 def news(request):
-    news_to_view=News.objects.all()
-    paginator = Paginator(news_to_view, 2) 
+    news_to_view = News.objects.all()
+    paginator = Paginator(news_to_view, 2)
     page = request.GET.get('page')
     try:
         cur_news = paginator.page(page)
@@ -100,5 +106,12 @@ def news(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         cur_news = paginator.page(paginator.num_pages)
+    return {'News': cur_news}
 
-    return {'News':cur_news}
+
+@render_to("admin.html")
+@top_level_menu("Admin", "admin", 999)
+def admin(request):
+    return {}
+
+
