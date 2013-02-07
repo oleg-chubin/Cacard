@@ -51,7 +51,18 @@
               <li {% if item.active %}class="active"{% endif %} ><a href="/{{ item.link }}">{{ item.name }}</a></li>
         {% endfor %}
       </ul>
-    </div>
+        <form action="/i18n/setlang/" method="post" class="navbar-form pull-left">
+          {% csrf_token %}
+          <input name="next" type="hidden" value="{{ redirect_to }}" />
+          <select name="language">
+            {% get_language_info_list for LANGUAGES as languages %}
+            {% for language in languages %}
+            <option value="{{ language.code }}">{{ language.name_local }} ({{ language.code }})</option>
+            {% endfor %}
+          </select>
+          <input type="submit" value="Go" class="btn" />
+        </form>
+   </div>
   </div>
 </div>
 <div class="row">
