@@ -7,19 +7,21 @@
     <ul class="nav nav-list">
     	<li class="nav-header">{% trans "Полезная информация" %}</li>
     {% for item in categorys %}
-     <li {% if prod_item == item.id  %}class="active"{% endif %}>
-     	<a href="?select={{ item.id }}">{{ item.title }} </a></li>
+     <li {% if customer_item == item.id  %}class="active"{% endif %}>
+        <a href="{% url paged_customer select=item.id %}">{{ item.title }} </a></li>             
     {% endfor %}
     </ul>
     </div>
 {% endblock %}
+
+
 
 {% block content %}
 
    
 
 <div id="To consumer">
-        
+      {% if context|length > 0 %}        
       {% for item in context %}
         <h3>{{ item.title }}</h3>
         <p>{{ item.description }}</p>
@@ -44,7 +46,9 @@
         {% endif %}  
         
     </div>
-
+    {% else %}
+       <p>Please select category</p>
+    {% endif %}
               
 </div>
 {% endblock %}

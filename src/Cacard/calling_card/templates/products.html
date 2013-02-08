@@ -26,7 +26,9 @@
       {% if products|length > 0 %}  
       {% for prod in products %}
         <h3>{{ prod.title }}</h3>
+        <h4>{{ prod.brand }}</h4>
         <p>{{ prod.description }}</p>
+        <img src = '{{ MEDIA_URL }}{{prod.brand.image_tumboral}}' alt="Not found"/>
         <table  class="table table-bordered table-condensed">
         <thead>
         <th>{% trans "Name of Tara" %}</th>
@@ -49,6 +51,7 @@
           {% else %}
             <h3></h3>
             <p>{% trans "Please select category" %} </p>
+
           {% endif %}
       {% endif %}
 

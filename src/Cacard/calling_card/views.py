@@ -58,15 +58,11 @@ def contacts(request):
 
 @render_to("customer.html")
 @top_level_menu("Cusomer", "customer", 5)
-def customer(request):
+def customer(request, select='0'):
     categorys = ConsumerCategory.objects.all()
-    context = ConsumerInfo.objects.filter(consumercategory=categorys[0])
-    select = request.GET.get('select')
+    context = ''
     if select:
-        context = ConsumerInfo.objects.filter(consumercategory=select)
-    else:
-        select = categorys[0].id
-
+        context = ConsumerInfo.objects.filter(consumercategory = select)
     paginator = Paginator(context, 2)
     page = request.GET.get('page')
     try:
@@ -77,7 +73,7 @@ def customer(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         cont_to_view = paginator.page(paginator.num_pages)
-    return {'context': cont_to_view, 'categorys': categorys, 'prod_item': int(select)}
+    return {'context': cont_to_view, 'categorys': categorys, 'customer_item': int(select)}
 
 
 @render_to("products.html")
