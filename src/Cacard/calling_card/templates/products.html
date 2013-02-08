@@ -5,12 +5,12 @@
 
   <div "tabs" style="float: left;width: 150px">
     <ul class="nav nav-list">
-    	
+
     {% for brand in brands %}
     <li class="nav-header">{{ brand.title }}</li>
        {% for prod_cat in product_categorys %}
      <li {% if prod_item == brand.id  %} {% if prodcat_item == prod_cat.id  %} class="active"{% endif %} {% endif %}>
-     	     <a href="{% url paged_product page=brand.id prod=prod_cat.id %}">{{ prod_cat.title }} </a></li>             
+            <a href="{% url paged_product page=brand.id prod=prod_cat.id %}">{{ prod_cat.title }} </a></li>
        {% endfor %}
     {% endfor %}
     </ul>
@@ -19,29 +19,41 @@
 
 {% block content %}
 
-   
+
 
 <div id="products">
-            
-      {% if products|length > 0 %}  
+
+      {% if products|length > 0 %}
       {% for prod in products %}
-        <h3>{{ prod.title }}</h3>
-        <h4>{{ prod.brand }}</h4>
-        <p>{{ prod.description }}</p>
-        <img src = '{{ MEDIA_URL }}{{prod.brand.image_tumboral}}' alt="Not found"/>
-        <table  class="table table-bordered table-condensed">
-        <thead>
-        <th>{% trans "Name of Tara" %}</th>
-        <th>{% trans "Capacity" %}</th>
-        <th>{% trans "How many in box" %}</th>
-        </thead>
-        <tr>
-        <td>{{ prod.tare.name }}</td>
-        <td>{{ prod.tare.capacity }}</td>
-        <td>{{ prod.tare.in_box }}</td>
-        </tr>
-        </table>
-        <p>{% trans "Store condition:" %} {{ prod.storagecondition }}</p>
+        <div class="row">
+          <div class="span2">
+            <ul class="thumbnails">
+              <li class="span2">
+                <a class="thumbnail" href="{{ MEDIA_URL }}{{prod.brand.image}}">
+                  <img data-src="holder.js/300x200" alt="" src = '{{ MEDIA_URL }}{{prod.brand.image_tumboral}}'>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="span6">
+            <h3>{{ prod.title }}</h3>
+            <h4>{{ prod.brand }}</h4>
+            <p>{{ prod.description }}</p>
+            <table  class="table table-bordered table-condensed">
+              <thead>
+                <th>{% trans "Name of Tara" %}</th>
+                <th>{% trans "Capacity" %}</th>
+                <th>{% trans "How many in box" %}</th>
+              </thead>
+              <tr>
+                <td>{{ prod.tare.name }}</td>
+                <td>{{ prod.tare.capacity }}</td>
+                <td>{{ prod.tare.in_box }}</td>
+              </tr>
+            </table>
+            <p>{% trans "Store condition:" %} {{ prod.storagecondition }}</p>
+          </div>
+        </div>
       {% endfor %}
 
       {% else %}
@@ -55,7 +67,7 @@
           {% endif %}
       {% endif %}
 
-              
+
     </div>
 {% endblock %}
 
