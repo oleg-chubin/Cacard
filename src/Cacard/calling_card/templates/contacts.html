@@ -12,7 +12,21 @@
         <address>{{ item.description }}</address>
         
       {% endfor %}
-    
+</br>
+    {% if need_form %}
+
+<h2> {% trans "Please leave feedback" %} </h2>
+<form action="/contacts/" method="post">
+	{% csrf_token %}
+
+{{ form.as_p }}           
+
+
+<input type="submit" value="Submit" />
+</form>
+    {% else %}
+    <h2>  {% trans "Thanks for your feedback"%}</h2>
+    {% endif%}
        
 </div>
 {% endblock %}

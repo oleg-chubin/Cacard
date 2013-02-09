@@ -30,6 +30,16 @@ class Info(models.Model):
         return ('No translation')
 
 
+class Feed_back(models.Model):
+    title = models.CharField(max_length=100)
+    message = models.TextField()
+    name = models.CharField(max_length=100)
+    e_mail = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return u'%s' % (self.title)
+
+
 class Tare(Info):
     name = models.CharField(max_length=25)
     capacity = models.IntegerField()
@@ -186,6 +196,10 @@ class LanguageAdmin(admin.ModelAdmin):
     list_display = ('name', 'code')
 
 
+class Feed_backAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.register(News, NewsAdmin)
 admin.site.register(Adress, AdressAdmin)
 admin.site.register(Language, LanguageAdmin)
@@ -197,3 +211,4 @@ admin.site.register(ConsumerCategory, ConsumerCategoryAdmin)
 admin.site.register(ConsumerSubCategory, ConsumerSubCategoryAdmin)
 admin.site.register(ConsumerInfo, ConsumerInfoAdmin)
 admin.site.register(StorageCondition, StorageConditionAdmin)
+admin.site.register(Feed_back, Feed_backAdmin)

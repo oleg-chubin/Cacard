@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from models import News, Product, Brand, Adress, ConsumerInfo
 from models import ConsumerCategory, ProductCategory
+from forms import Feed_back
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from operator import itemgetter
 
@@ -53,7 +54,16 @@ def about(request):
 @top_level_menu("Contacts", "contacts", 6)
 def contacts(request):
     contacts = Adress.objects.all()
-    return {'contacts': contacts}
+    need_form = True
+    if request.method == 'POST':
+        form = Feed_back(request.POST)
+        if form.is_valid():
+            need_form = False
+            form.save()
+            return {'contacts': contacts, 'need_form': need_form}
+    else:
+        form = Feed_back()
+    return {'contacts': contacts, 'form': form, 'need_form': need_form}
 
 
 @render_to("customer.html")
@@ -78,13 +88,13 @@ def customer(request, select='0'):
 
 @render_to("products.html")
 @top_level_menu("Products", "product", 3)
-def product(request, page='0', prod='0'):
+def product(request, brand_id='0', prod='0'):
 #    products = Product.objects.all()
     brands = Brand.objects.all()
     product_categorys = ProductCategory.objects.all()
-    if page:
-        products = Product.objects.filter(brand = page, productcategory = prod)
-    return {'prod_item': int(page),'prodcat_item': int(prod), 'products': products,
+    if brand_id:
+        products = Product.objects.filter(brand = brand_id, productcategory = prod)
+    return {'prod_item': int(brand_id),'prodcat_item': int(prod), 'products': products,
             'brands': brands, 'product_categorys': product_categorys}
 
 
