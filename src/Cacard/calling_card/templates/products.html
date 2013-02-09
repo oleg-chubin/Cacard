@@ -2,19 +2,16 @@
 {% load i18n  %}
 
 {% block tabs %}
+    <ul class="nav nav-pills nav-stacked">
 
-  <div "tabs" style="float: left;width: 150px">
-    <ul class="nav nav-list">
-
-    {% for brand in brands %}
+     {% for brand in brands %}
     <li class="nav-header">{{ brand.title }}</li>
        {% for prod_cat in product_categorys %}
      <li {% if prod_item == brand.id  %} {% if prodcat_item == prod_cat.id  %} class="active"{% endif %} {% endif %}>
-            <a href="{% url paged_product brand_id=brand.id prod=prod_cat.id %}">{{ prod_cat.title }} </a></li>
+             <a href="{% url paged_product brand_id=brand.id prod=prod_cat.id %}">{{ prod_cat.title }} </a></li>
        {% endfor %}
     {% endfor %}
     </ul>
-    </div>
 {% endblock %}
 
 {% block content %}

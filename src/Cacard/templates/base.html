@@ -11,6 +11,10 @@
     <!-- Le styles -->
     <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet">
 
+    <script type="text/javascript" async="" src="/static/js/jquery-1.9.1.js">
+    </script>
+    <script type="text/javascript" async="" src="/static/bootstrap/js/bootstrap.js">
+    </script>
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -33,17 +37,7 @@
   {% block body_header %}
   {% endblock body_header %}
   </header>
-  <div class="container">
-    <div class="alert-container">
-    {% for message in messages %}
-      {% with message.tags as alert_type %}
-        {% with message as message_text %}
-          {% comment %} {% include "coreadmin/bootstrap_alert.html" %} {% endcomment %}
-        {% endwith %}
-      {% endwith %}
-    {% endfor %}
-    </div>
-<div class="navbar navbar-static-top">
+<div class="navbar navbar-static-top" style="margin: -1px -1px 0;">
   <div class="navbar-inner">
     <div class="container">
       <ul class="nav">
@@ -65,6 +59,16 @@
    </div>
   </div>
 </div>
+  <div class="container">
+    <div class="alert-container">
+    {% for message in messages %}
+      {% with message.tags as alert_type %}
+        {% with message as message_text %}
+          {% comment %} {% include "coreadmin/bootstrap_alert.html" %} {% endcomment %}
+        {% endwith %}
+      {% endwith %}
+    {% endfor %}
+    </div>
 <div class="row">
   <div class="span2">
     {% block tabs %}
@@ -75,16 +79,17 @@
     {% block content %}
     {% endblock content %}
   </div>
-</div>
-    
-     
+
   </div>
-    <div><footer>
+</div>
+    <footer>
+      <div class="container">
         <p class="right"><a href="/">Return to Home</a></p>
         <p>
             Version {{ COREDATA_VERSION }}<br />
             &copy; {% now "Y" %} {% trans "Anonimous team" %}
         </p>
-    </div></footer>
+      </div>
+    </footer>
   </body>
   </html>
