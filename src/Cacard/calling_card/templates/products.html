@@ -1,6 +1,24 @@
 {% extends "base.html" %}
 {% load i18n  %}
 
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/jquery.lightbox-0.5.css" media="screen" />
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.lightbox-0.5.js">
+</script>
+<script type="text/javascript">
+(function($) {
+  $(function() {
+    $('.thumbnails a').lightBox({fixedNavigation:true,
+                                imageLoading: '{{STATIC_URL}}images/lightbox-ico-loading.gif',
+                                imageBtnPrev: '{{STATIC_URL}}images/lightbox-btn-prev.gif',
+                                imageBtnNext: '{{STATIC_URL}}images/lightbox-btn-next.gif',
+                                imageBtnClose: '{{STATIC_URL}}images/lightbox-btn-close.gif',
+                                imageBlank: '{{STATIC_URL}}images/lightbox-blank.gif'});
+});
+})(jQuery);
+</script>
+{% endblock %}
+
 {% block tabs %}
     <ul class="nav nav-pills nav-stacked">
 
@@ -23,19 +41,22 @@
       {% if products|length > 0 %}
       {% for prod in products %}
         <div class="row">
+        {% if prod.info_image %}
           <div class="span2">
             <ul class="thumbnails">
               <li class="span2">
-                <a class="thumbnail" href="{{ MEDIA_URL }}{{prod.brand.image}}">
-                  <img data-src="holder.js/300x200" alt="" src = '{{ MEDIA_URL }}{{prod.brand.image_tumboral}}'>
+
+                <a class="thumbnail" href="{{ MEDIA_URL }}{{prod.info_image.image}}">
+                  <img data-src="holder.js/300x200" class="img-rounded" alt="" src = '{{ MEDIA_URL }}{{prod.info_image.thumbnail}}'>
                 </a>
               </li>
             </ul>
           </div>
+        {% endif %}
           <div class="span6">
             <h3>{{ prod.title }}</h3>
             <h4>{{ prod.brand }}</h4>
-            <p>{{ prod.description }}</p>
+            <p>{{ prod.description|linebreaks }}</p>
             <table  class="table table-bordered table-condensed">
               <thead>
                 <th>{% trans "Name of Tara" %}</th>

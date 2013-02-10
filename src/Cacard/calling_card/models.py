@@ -1,8 +1,16 @@
+from StringIO import StringIO
+from PIL import ImageFile
 from django.db import models
-from django.contrib import admin
 from django.utils.translation import get_language
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
+
 # Create your models here.
 
+
+PORTION_SIZE = 1024
 
 class Language(models.Model):
     name = models.CharField(max_length=25)
@@ -10,7 +18,6 @@ class Language(models.Model):
 
     def __unicode__(self):
         return u'%s' % (self.name)
-
 
 class Info(models.Model):
     @property
@@ -28,6 +35,44 @@ class Info(models.Model):
         if translation.count():
             return translation[0].description
         return ('No translation')
+
+    @property
+    def info_image(self):
+        if not self.infoimage_set.count():
+            return
+        return self.infoimage_set.order_by('-priority')[0]
+
+
+class InfoImage(models.Model):
+    thumbnail = models.ImageField(upload_to='images')
+    image = models.ImageField(upload_to='images')
+    priority = models.IntegerField()
+    info = models.ForeignKey(Info)
+
+@receiver(pre_save, sender=InfoImage)
+def thumbnail_handler(sender, instance=None, **kwargs):
+    if not instance.thumbnail or not isinstance(instance.thumbnail.file,
+                                                InMemoryUploadedFile):
+        return
+
+    thumb_file = instance.thumbnail.file
+    parser = ImageFile.Parser()
+    portion = thumb_file.read(PORTION_SIZE)
+    while portion:
+        parser.feed(portion)
+        portion = thumb_file.read(PORTION_SIZE)
+    image_file = parser.close()
+    size = image_file.size
+    ratio = max([i / 320.0 for i in size])
+    resized_image = image_file.resize([int(i / ratio) for i in size])
+    thumb = StringIO()
+    resized_image.save(thumb, image_file.format)
+    instance.thumbnail = InMemoryUploadedFile(thumb, thumb_file.field_name,
+                                              thumb_file.name,
+                                              thumb_file.content_type,
+                                              thumb.len, thumb_file.charset)
+
+    return
 
 
 class Feed_back(models.Model):
@@ -50,10 +95,6 @@ class Tare(Info):
 
 
 class Brand(Info):  # kama,oleyna
-    image_tumboral = models.ImageField(upload_to='images',
-                                       blank=True, null=True)
-    image = models.ImageField(upload_to='images', blank=True, null=True)
-
     def __unicode__(self):
         return u'%s' % (self.title)
 
@@ -118,97 +159,3 @@ class Adress(Info):
     type_adr = models.CharField(max_length=50)
 
 
-class TranslationInline(admin.TabularInline):
-    model = Translation
-
-
-class NewsAdmin(admin.ModelAdmin):
-    inlines = (
-        TranslationInline,
-    )
-    list_display = ('date', 'title')
-
-
-class AdressAdmin(admin.ModelAdmin):
-    inlines = (
-        TranslationInline,
-    )
-    list_display = ('type_adr', 'title')
-
-
-class TareAdmin(admin.ModelAdmin):
-    inlines = (
-        TranslationInline,
-    )
-    list_display = ('title',)
-
-
-class StorageConditionAdmin(admin.ModelAdmin):
-    inlines = (
-        TranslationInline,
-    )
-    list_display = ('title',)
-
-
-class BrandAdmin(admin.ModelAdmin):
-    inlines = (
-        TranslationInline,
-    )
-    list_display = ('title',)
-
-
-class ProductCategoryAdmin(admin.ModelAdmin):
-    inlines = (
-        TranslationInline,
-    )
-    list_display = ('title',)
-
-
-class ProductAdmin(admin.ModelAdmin):
-    inlines = (
-        TranslationInline,
-    )
-    list_display = ('title',)
-
-
-class ConsumerCategoryAdmin(admin.ModelAdmin):
-    inlines = (
-        TranslationInline,
-    )
-    list_display = ('title',)
-
-
-class ConsumerSubCategoryAdmin(admin.ModelAdmin):
-    inlines = (
-        TranslationInline,
-    )
-    list_display = ('title',)
-
-
-class ConsumerInfoAdmin(admin.ModelAdmin):
-    inlines = (
-        TranslationInline,
-    )
-    list_display = ('title',)
-
-
-class LanguageAdmin(admin.ModelAdmin):
-    list_display = ('name', 'code')
-
-
-class Feed_backAdmin(admin.ModelAdmin):
-    pass
-
-
-admin.site.register(News, NewsAdmin)
-admin.site.register(Adress, AdressAdmin)
-admin.site.register(Language, LanguageAdmin)
-admin.site.register(Tare, TareAdmin)
-admin.site.register(Brand, BrandAdmin)
-admin.site.register(ProductCategory, ProductCategoryAdmin)
-admin.site.register(Product, ProductAdmin)
-admin.site.register(ConsumerCategory, ConsumerCategoryAdmin)
-admin.site.register(ConsumerSubCategory, ConsumerSubCategoryAdmin)
-admin.site.register(ConsumerInfo, ConsumerInfoAdmin)
-admin.site.register(StorageCondition, StorageConditionAdmin)
-admin.site.register(Feed_back, Feed_backAdmin)

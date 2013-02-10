@@ -3,34 +3,44 @@
 {% block content %}
 
 <div id="news">
-        
+
       <h2> {% trans "News" %} </h2>
       {% for new in News %}
-        <h3>{{ new.title }}</h3>
-        {{ new.description }}
-        <div class="row">
-         <div class="span2 offset6"><span class="label">{{ new.date }}</span></div>
+      <div class="row-fluid">
+        {% if new.info_image %}
+        <div class="span2">
+            <img data-src="holder.js/300x200" class="img-rounded" alt="" src = '{{ MEDIA_URL }}{{new.info_image.thumbnail}}'>
+        </div>
+        {% endif %}
+
+        <div class="span6">
+          <h3>{{ new.title }}</h3>
+          {{ new.description|linebreaks }}
+          <div class="row">
+           <div class="span2 offset6"><span class="label">{{ new.date }}</span></div>
+           </div>
          </div>
+       </div>
       {% endfor %}
-    
+
     <div>
        <ul class="pager">
         {% if News.has_previous %}
           <li class="previous">
           <a href="?page={{ News.previous_page_number }}">{% trans "Previous" %}</a>
           </li>
-        
+
         {% endif %}
-        
-        <li class="active"><span>Страница {{ News.number }} из {{ News.paginator.num_pages }}</span></li>  
-        
+
+        <li class="active"><span>Страница {{ News.number }} из {{ News.paginator.num_pages }}</span></li>
+
         {% if News.has_next %}
         <li class="next">
         <a href="?page={{ News.next_page_number }}">{% trans "Next" %}</a>
         </li>
-        
-        {% endif %}  
-        
+
+        {% endif %}
+
     </div>
 {% endblock %}
 

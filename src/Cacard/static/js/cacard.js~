@@ -1,0 +1,6 @@
+(function($) {
+  $(function() {
+    $('.thumbnails a').lightBox({fixedNavigation:true});
+});
+})(jQuery);
+
