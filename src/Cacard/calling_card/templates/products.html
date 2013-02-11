@@ -8,12 +8,13 @@
 <script type="text/javascript">
 (function($) {
   $(function() {
-    $('.thumbnails a').lightBox({fixedNavigation:true,
+    $('.thumbnails').each(function(){
+        $("#"+this.id + " a").lightBox({fixedNavigation:true,
                                 imageLoading: '{{STATIC_URL}}images/lightbox-ico-loading.gif',
                                 imageBtnPrev: '{{STATIC_URL}}images/lightbox-btn-prev.gif',
                                 imageBtnNext: '{{STATIC_URL}}images/lightbox-btn-next.gif',
                                 imageBtnClose: '{{STATIC_URL}}images/lightbox-btn-close.gif',
-                                imageBlank: '{{STATIC_URL}}images/lightbox-blank.gif'});
+                                imageBlank: '{{STATIC_URL}}images/lightbox-blank.gif'});});
 });
 })(jQuery);
 </script>
@@ -43,13 +44,15 @@
         <div class="row">
         {% if prod.info_image %}
           <div class="span2">
-            <ul class="thumbnails">
-              <li class="span2">
+            <ul class="thumbnails" id="image_{{prod.id}}">
+              {% for image_info in prod.infoimage_set.all %}
 
-                <a class="thumbnail" href="{{ MEDIA_URL }}{{prod.info_image.image}}">
-                  <img data-src="holder.js/300x200" class="img-rounded" alt="" src = '{{ MEDIA_URL }}{{prod.info_image.thumbnail}}'>
-                </a>
-              </li>
+                <li class={% if forloop.first %}"span2"{% else %}"span1"{% endif %}>
+                  <a class="thumbnail" href="{{ MEDIA_URL }}{{image_info.image}}">
+                      <img data-src="holder.js/300x200" class="img-rounded" alt="" src = '{{ MEDIA_URL }}{{image_info.thumbnail}}'>
+                  </a>
+                </li>
+              {% endfor %}
             </ul>
           </div>
         {% endif %}
