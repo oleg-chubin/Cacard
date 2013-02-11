@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from models import News, Product, Brand, Adress, ConsumerInfo
 from models import ConsumerCategory, ProductCategory
-#from forms import Feed_back
+from forms import Feed_back
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from operator import itemgetter
 
@@ -55,21 +55,21 @@ def about(request):
 def contacts(request):
     contacts = Adress.objects.all()
     need_form = True
-#    if request.method == 'POST':
-#        form = Feed_back(request.POST)
-#        if form.is_valid():
-#            need_form = False
-#            form.save()
-#            return {'contacts': contacts, 'need_form': need_form}
-#    else:
-#        form = Feed_back()
+    if request.method == 'POST':
+        form = Feed_back(request.POST)
+        if form.is_valid():
+            need_form = False
+            form.save()
+            return {'contacts': contacts, 'need_form': need_form}
+    else:
+        form = Feed_back()
     return {'contacts': contacts,
-#            'form': form,
+            'form': form,
             'need_form': need_form}
 
 
 @render_to("customer.html")
-@top_level_menu("Cusomer", "customer", 5)
+@top_level_menu("Customer", "customer", 5)
 def customer(request, select='0'):
     categorys = ConsumerCategory.objects.all()
     context = ''

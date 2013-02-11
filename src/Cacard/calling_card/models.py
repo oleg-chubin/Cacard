@@ -112,31 +112,25 @@ class StorageCondition(Info):
 
 
 class Product(Info):
-    tare = models.ForeignKey(Tare)
+    tare = models.ManyToManyField(Tare)
     brand = models.ForeignKey(Brand)
     productcategory = models.ForeignKey(ProductCategory)
     storagecondition = models.ForeignKey(StorageCondition)
 
 
 class ConsumerCategory(Info):
-    image_tumboral = models.ImageField(upload_to='images', blank=True, null=True)
-    image = models.ImageField(upload_to='images', blank=True, null=True)
-
+    
     def __unicode__(self):
         return u'%s' % (self.title)
 
 
 class ConsumerSubCategory(Info):
-    image_tumboral = models.ImageField(upload_to='images', blank=True, null=True)
-    image = models.ImageField(upload_to='images', blank=True, null=True)
 
     def __unicode__(self):
         return u'%s' % (self.title)
 
 
 class ConsumerInfo(Info):
-    image_tumboral = models.ImageField(upload_to='images', blank=True, null=True)
-    image = models.ImageField(upload_to='images', blank=True, null=True)
     consumercategory = models.ForeignKey(ConsumerCategory)
     consumersubcategory = models.ForeignKey(ConsumerSubCategory)
 
