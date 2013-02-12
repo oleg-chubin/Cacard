@@ -68,7 +68,7 @@ def resize_uploaded_image(initial_image, max_size):
 
 @receiver(pre_save, sender=InfoImage)
 def resize_image_handler(sender, instance=None, **kwargs):
-    import ipdb; ipdb.set_trace()
+#    import ipdb; ipdb.set_trace()
     if isinstance(instance.thumbnail.file, UploadedFile):
         instance.thumbnail = resize_uploaded_image(instance.thumbnail.file,
                                                     320)

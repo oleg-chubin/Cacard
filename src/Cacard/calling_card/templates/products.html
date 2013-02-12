@@ -39,7 +39,7 @@
 
 <div id="products">
 
-      {% if products|length > 0 %}
+      {% if products.count > 0 %}
       {% for prod in products %}
         <div class="row">
         {% if prod.info_image %}
@@ -60,18 +60,23 @@
             <h3>{{ prod.title }}</h3>
             <h4>{{ prod.brand }}</h4>
             <p>{{ prod.description|linebreaks }}</p>
+            
+            {% if prod.tare.all.count > 0 %}
             <table  class="table table-bordered table-condensed">
               <thead>
                 <th>{% trans "Name of Tara" %}</th>
                 <th>{% trans "Capacity" %}</th>
                 <th>{% trans "How many in box" %}</th>
               </thead>
-              <tr>
-                <td>{{ prod.tare.name }}</td>
-                <td>{{ prod.tare.capacity }}</td>
-                <td>{{ prod.tare.in_box }}</td>
+            {% for tare in prod.tare.all %}
+             <tr>
+                <td>{{ tare.name }}</td>
+                <td>{{ tare.capacity }}</td>
+                <td>{{ tare.in_box }}</td>
               </tr>
+            {% endfor %}
             </table>
+            {% endif %}
             <p>{% trans "Store condition:" %} {{ prod.storagecondition }}</p>
           </div>
         </div>

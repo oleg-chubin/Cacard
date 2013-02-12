@@ -1,14 +1,71 @@
 {% extends "base.html" %}
+{% load i18n  %}
+
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/jquery.lightbox-0.5.css" media="screen" />
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.lightbox-0.5.js">
+</script>
+<script type="text/javascript">
+(function($) {
+  $(function() {
+    $('.thumbnails').each(function(){
+        $("#"+this.id + " a").lightBox({fixedNavigation:true,
+                                imageLoading: '{{STATIC_URL}}images/lightbox-ico-loading.gif',
+                                imageBtnPrev: '{{STATIC_URL}}images/lightbox-btn-prev.gif',
+                                imageBtnNext: '{{STATIC_URL}}images/lightbox-btn-next.gif',
+                                imageBtnClose: '{{STATIC_URL}}images/lightbox-btn-close.gif',
+                                imageBlank: '{{STATIC_URL}}images/lightbox-blank.gif'});});
+});
+})(jQuery);
+</script>
+{% endblock %}
+
 
 {% block content %}
-    <div id="about">
-      <table>
-        <tr>
-          <td>
+
+    <div id="about" class="row">
+      <div class="span8">
               <h2> Более подробно о нашем бизнесе</h2>
               <p> как вы знаете, наша компания уже годами работает на рынке</p>
-          </td>
-        </tr>
-       </table>
+
+
+       </div>
     </div>
+
+
+
+	 
+     {% for brand in brands %}
+    
+<div id = "TradeMark" class="row">           
+    <div class="span8">
+       <h4> {{ brand.title }} </h4> 
+     <div class="span2">
+     <p> 	{{ brand.description }}	</p>
+   </div> 
+          	
+        <div class="span2">
+        {% for prod_cat in product_categorys %}
+        <li>  <a href="{% url paged_product brand_id=brand.id prod=prod_cat.id %}">{{ prod_cat.title }} </a></li>
+       {% endfor %}
+   </div>
+        
+       {% if brand.info_image %}
+          <ul class="thumbnails" id="image_{{prod.id}}">
+              {% for image_info in brand.infoimage_set.all %}
+
+                <li class={% if forloop.first %}"span2"{% else %}"span1"{% endif %}>
+                  <a class="thumbnail" href="{{ MEDIA_URL }}{{image_info.image}}">
+                      <img data-src="holder.js/300x200" class="img-rounded" alt="" src = '{{ MEDIA_URL }}{{image_info.thumbnail}}'>
+                  </a>
+                </li>
+              {% endfor %}
+       {% endif %}
+    
+    </div>
+</div>
+      
+    {% endfor %}
+    
+
 {% endblock %}

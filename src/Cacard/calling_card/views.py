@@ -41,7 +41,9 @@ def top_level_menu(item, link, order):
 @render_to("about.html")
 @top_level_menu("Home", "", 1)
 def home(request):
-    return  {}
+    brands = Brand.objects.all()
+    product_categorys = ProductCategory.objects.all()
+    return  {'brands': brands, 'product_categorys': product_categorys}
 
 
 @render_to("about.html")
