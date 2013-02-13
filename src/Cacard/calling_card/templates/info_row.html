@@ -1,22 +1,25 @@
-
-<div id = "TradeMark" class="row">           
-    <div class="span8">
-       <a href="{% url paged_product brand_id=info.id %}"><h4> {{ info.title }} </h4> </a></li> 
-     <div class="span2">
-     <p> 	{{ info.description }}	</p>
-   </div> 
-          	
-       {% if info.info_image %}
-          <ul class="thumbnails" id="image_{{prod.id}}">
-              {% for image_info in info.infoimage_set.all %}
-
-                <li class={% if forloop.first %}"span2"{% else %}"span1"{% endif %}>
-                  <a class="thumbnail" href="{{ MEDIA_URL }}{{image_info.image}}">
-                      <img data-src="holder.js/300x200" class="img-rounded" alt="" src = '{{ MEDIA_URL }}{{image_info.thumbnail}}'>
-                  </a>
-                </li>
-              {% endfor %}
-       {% endif %}
-    
+<div class="row">
+  {% if info_item.info_image %}
+    <div class="span2">
+      <ul class="thumbnails" id="image_{{info_item.id}}">
+        {% for image_info in info_item.infoimage_set.all %}
+          <li class={% if forloop.first %}"span2"{% else %}"span1"{% endif %}>
+            <a class="thumbnail" href="{{ MEDIA_URL }}{{image_info.image}}">
+                <img data-src="holder.js/300x200" class="img-rounded" alt="" src = '{{ MEDIA_URL }}{{image_info.thumbnail}}'>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
     </div>
+  <div class="span6">
+  {% else %}
+  <div class="span8">
+  {% endif %}
+    <h3>{{ info_item.title }}</h3>
+    <h4>{{ info_item.brand }}</h4>
+    <p>{{ info_item.description|linebreaks }}</p>
+
+    {% block extra_info_details %}
+    {% endblock extra_info_details %}
+  </div>
 </div>

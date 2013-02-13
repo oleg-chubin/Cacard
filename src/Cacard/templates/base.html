@@ -28,6 +28,22 @@
                                    <link rel="shortcut icon" href="assets/ico/favicon.png">
 
 
+    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/jquery.lightbox-0.5.css" media="screen" />
+    <script type="text/javascript" src="{{STATIC_URL}}js/jquery.lightbox-0.5.js">
+    </script>
+    <script type="text/javascript">
+      (function($) {
+        $(function() {
+          $('.thumbnails').each(function(){
+              $("#"+this.id + " a").lightBox({fixedNavigation:true,
+                                      imageLoading: '{{STATIC_URL}}images/lightbox-ico-loading.gif',
+                                      imageBtnPrev: '{{STATIC_URL}}images/lightbox-btn-prev.gif',
+                                      imageBtnNext: '{{STATIC_URL}}images/lightbox-btn-next.gif',
+                                      imageBtnClose: '{{STATIC_URL}}images/lightbox-btn-close.gif',
+                                      imageBlank: '{{STATIC_URL}}images/lightbox-blank.gif'});});
+        });
+      })(jQuery);
+    </script>
     {% block extra_head %}{% endblock %}
     {% block customer_head %}{% endblock %}
   </head>

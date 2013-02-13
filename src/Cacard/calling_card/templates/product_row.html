@@ -1,0 +1,22 @@
+{% extends "info_row.html" %}
+{% load i18n  %}
+
+{% block extra_info_details %}
+  {% if info_item.tare.all.count > 0 %}
+  <table  class="table table-bordered table-condensed">
+    <thead>
+      <th>{% trans "Name of Tara" %}</th>
+      <th>{% trans "Capacity" %}</th>
+      <th>{% trans "How many in box" %}</th>
+    </thead>
+  {% for tare in info_item.tare.all %}
+   <tr>
+      <td>{{ tare.name }}</td>
+      <td>{{ tare.capacity }}</td>
+      <td>{{ tare.in_box }}</td>
+    </tr>
+  {% endfor %}
+  </table>
+  {% endif %}
+  <p>{% trans "Store condition:" %} {{ info_item.storagecondition }}</p>
+{% endblock extra_info_details %}

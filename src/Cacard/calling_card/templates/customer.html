@@ -5,52 +5,49 @@
 
   <div "tabs" style="float: left;width: 150px">
     <ul class="nav nav-list">
-    	<li class="nav-header">{% trans "Полезная информация" %}</li>
+      <li class="nav-header">{% trans "Useful information" %}</li>
     {% for item in categorys %}
      <li {% if customer_item == item.id  %}class="active"{% endif %}>
-        <a href="{% url paged_customer select=item.id %}">{{ item.title }} </a></li>             
+        <a href="{% url paged_customer select=item.id %}">{{ item.title }} </a></li>
     {% endfor %}
     </ul>
     </div>
 {% endblock %}
 
-
-
 {% block content %}
-
-   
-
-<div id="To consumer">
-      {% if context|length > 0 %}        
-      {% for item in context %}
-        <h3>{{ item.title }}</h3>
-        <p>{{ item.description }}</p>
-        
+  <div>
+    {% if context|length > 0 %}
+      {% for info_item in context %}
+        {% include "info_row.html" %}
       {% endfor %}
-<div>
-       <ul class="pager">
-        {% if context.has_previous %}
-          <li class="previous">
+    <div>
+     <ul class="pager">
+      {% if context.has_previous %}
+        <li class="previous">
           <a href="?page={{ context.previous_page_number }}">{% trans "Previous" %}</a>
-          </li>
-        
-        {% endif %}
-        
-        <li class="active"><span>Страница {{ context.number }} из {{ context.paginator.num_pages }}</span></li>  
-        
-        {% if context.has_next %}
-        <li class="next">
-        <a href="?page={{ context.next_page_number }}">{% trans "Next" %}</a>
         </li>
-        
-        {% endif %}  
-        
+      {% endif %}
+      <li class="active"><span>Страница {{ context.number }} из {{ context.paginator.num_pages }}</span></li>
+      {% if context.has_next %}
+        <li class="next">
+          <a href="?page={{ context.next_page_number }}">{% trans "Next" %}</a>
+        </li>
+      {% endif %}
+     </ul>
     </div>
     {% else %}
-       <p>Please select category</p>
+      <h3> Rework me please </h3>
+      {% comment %}
+      {% if prodcat_item > 0 %}
+        <h3>{% trans "We don't have any goods in this category" %}</h3>
+      {% else %}
+        {% for info_item in brands %}
+          {% include "info_row.html" with info=brand%}
+        {% endfor%}
+      {% endif %}
+      {% endcomment %}
     {% endif %}
-              
-</div>
+  </div>
 {% endblock %}
 
 

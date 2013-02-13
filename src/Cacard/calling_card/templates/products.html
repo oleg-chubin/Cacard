@@ -2,22 +2,6 @@
 {% load i18n  %}
 
 {% block extra_head %}
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/jquery.lightbox-0.5.css" media="screen" />
-<script type="text/javascript" src="{{STATIC_URL}}js/jquery.lightbox-0.5.js">
-</script>
-<script type="text/javascript">
-(function($) {
-  $(function() {
-    $('.thumbnails').each(function(){
-        $("#"+this.id + " a").lightBox({fixedNavigation:true,
-                                imageLoading: '{{STATIC_URL}}images/lightbox-ico-loading.gif',
-                                imageBtnPrev: '{{STATIC_URL}}images/lightbox-btn-prev.gif',
-                                imageBtnNext: '{{STATIC_URL}}images/lightbox-btn-next.gif',
-                                imageBtnClose: '{{STATIC_URL}}images/lightbox-btn-close.gif',
-                                imageBlank: '{{STATIC_URL}}images/lightbox-blank.gif'});});
-});
-})(jQuery);
-</script>
 {% endblock %}
 
 {% block tabs %}
@@ -34,73 +18,21 @@
 {% endblock %}
 
 {% block content %}
-
-
-
 <div id="products">
-
-      {% if products.count > 0 %}
-      {% for prod in products %}
-        <div class="row">
-        {% if prod.info_image %}
-          <div class="span2">
-            <ul class="thumbnails" id="image_{{prod.id}}">
-              {% for image_info in prod.infoimage_set.all %}
-
-                <li class={% if forloop.first %}"span2"{% else %}"span1"{% endif %}>
-                  <a class="thumbnail" href="{{ MEDIA_URL }}{{image_info.image}}">
-                      <img data-src="holder.js/300x200" class="img-rounded" alt="" src = '{{ MEDIA_URL }}{{image_info.thumbnail}}'>
-                  </a>
-                </li>
-              {% endfor %}
-            </ul>
-          </div>
-        {% endif %}
-          <div class="span6">
-            <h3>{{ prod.title }}</h3>
-            <h4>{{ prod.brand }}</h4>
-            <p>{{ prod.description|linebreaks }}</p>
-            
-            {% if prod.tare.all.count > 0 %}
-            <table  class="table table-bordered table-condensed">
-              <thead>
-                <th>{% trans "Name of Tara" %}</th>
-                <th>{% trans "Capacity" %}</th>
-                <th>{% trans "How many in box" %}</th>
-              </thead>
-            {% for tare in prod.tare.all %}
-             <tr>
-                <td>{{ tare.name }}</td>
-                <td>{{ tare.capacity }}</td>
-                <td>{{ tare.in_box }}</td>
-              </tr>
-            {% endfor %}
-            </table>
-            {% endif %}
-            <p>{% trans "Store condition:" %} {{ prod.storagecondition }}</p>
-          </div>
-        </div>
-      {% endfor %}
-
-      {% else %}
-          {% if prodcat_item > 0 %}
-            <h3></h3>
-            <p>{% trans "We don't have any goods in this category" %} </p>
-          {% else %}
-            <h3></h3>
-            
-                {% for brand in brands %} 
-            	{% include "info_row.html" with info=brand%}
-            	
-            	{% endfor%}
-            	
-            	
-
-          {% endif %}
-      {% endif %}
-
-
-    </div>
+  {% if products.count > 0 %}
+    {% for info_item in products %}
+      {% include "product_row.html" %}
+    {% endfor %}
+  {% else %}
+    {% if prodcat_item > 0 %}
+      <h3>{% trans "We don't have any goods in this category" %}</h3>
+    {% else %}
+      {% for info_item in brands %}
+        {% include "info_row.html" with info=brand%}
+      {% endfor%}
+    {% endif %}
+  {% endif %}
+</div>
 {% endblock %}
 
 
