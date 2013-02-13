@@ -96,8 +96,10 @@ def product(request, brand_id='0', prod='0'):
 #    products = Product.objects.all()
     brands = Brand.objects.all()
     product_categorys = ProductCategory.objects.all()
-    if brand_id:
+    if brand_id and prod != '0':
         products = Product.objects.filter(brand = brand_id, productcategory = prod)
+    elif brand_id and prod == '0':
+        products = Product.objects.filter(brand = brand_id)
     return {'prod_item': int(brand_id),'prodcat_item': int(prod), 'products': products,
             'brands': brands, 'product_categorys': product_categorys}
 

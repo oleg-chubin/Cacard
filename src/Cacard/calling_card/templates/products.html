@@ -88,7 +88,13 @@
             <p>{% trans "We don't have any goods in this category" %} </p>
           {% else %}
             <h3></h3>
-            <p>{% trans "Please select category" %} </p>
+            
+                {% for brand in brands %} 
+            	{% include "info_row.html" with info=brand%}
+            	
+            	{% endfor%}
+            	
+            	
 
           {% endif %}
       {% endif %}
