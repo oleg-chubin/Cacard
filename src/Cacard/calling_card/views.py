@@ -1,8 +1,8 @@
 # Create your views here.
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from models import News, Product, Brand, Adress, ConsumerInfo
-from models import ConsumerCategory, ProductCategory
+from models import News, Product, Brand, ConsumerInfo
+from models import ConsumerCategory, ProductCategory, Adress_filial
 from forms import Feed_back
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from operator import itemgetter
@@ -55,7 +55,7 @@ def about(request):
 @render_to("contacts.html")
 @top_level_menu("Contacts", "contacts", 6)
 def contacts(request):
-    contacts = Adress.objects.all()
+    contacts = Adress_filial.objects.all()
     need_form = True
     if request.method == 'POST':
         form = Feed_back(request.POST)
@@ -75,6 +75,10 @@ def contacts(request):
 def customer(request, select='0'):
     categorys = ConsumerCategory.objects.all()
     context = ''
+    if select == '0':
+        need_url = True
+    else:
+        need_url = False
     if select:
         context = ConsumerInfo.objects.filter(consumercategory = select)
     paginator = Paginator(context, 2)
@@ -87,7 +91,8 @@ def customer(request, select='0'):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         cont_to_view = paginator.page(paginator.num_pages)
-    return {'context': cont_to_view, 'categorys': categorys, 'customer_item': int(select)}
+    return {'context': cont_to_view, 'categorys': categorys,
+            'customer_item': int(select), 'need_url': need_url}
 
 
 @render_to("products.html")
@@ -95,13 +100,18 @@ def customer(request, select='0'):
 def product(request, brand_id='0', prod='0'):
 #    products = Product.objects.all()
     brands = Brand.objects.all()
+    need_url = False
     product_categorys = ProductCategory.objects.all()
     if brand_id and prod != '0':
         products = Product.objects.filter(brand = brand_id, productcategory = prod)
     elif brand_id and prod == '0':
         products = Product.objects.filter(brand = brand_id)
+    if brand_id == '0':
+        need_url = True
+    else:
+        need_url = False
     return {'prod_item': int(brand_id),'prodcat_item': int(prod), 'products': products,
-            'brands': brands, 'product_categorys': product_categorys}
+            'brands': brands, 'product_categorys': product_categorys, 'need_url': need_url}
 
 
 @render_to("news.html")

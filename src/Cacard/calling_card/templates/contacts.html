@@ -6,7 +6,7 @@
         
       <h2> {% trans "Contacts" %} </h2>
       {% for item in contacts %}
-        <h3>{{ item.type_adr }}</h3>
+        <h3>{{ item.type.title }}</h3>
         <h5  class="text-success">{{ item.title }}</h5>
         {% trans "Adress:" %} 
         <address>{{ item.description }}</address>

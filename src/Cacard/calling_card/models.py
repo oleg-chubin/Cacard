@@ -120,7 +120,7 @@ class Product(Info):
 
 
 class ConsumerCategory(Info):
-    
+
     def __unicode__(self):
         return u'%s' % (self.title)
 
@@ -150,7 +150,11 @@ class News(Info):
         ordering = ('-date',)
 
 
-class Adress(Info):
-    type_adr = models.CharField(max_length=50)
+class Adress_type(Info):
+
+    def __unicode__(self):
+        return u'%s' % (self.title)
 
 
+class Adress_filial(Info):
+    type = models.ForeignKey(Adress_type)

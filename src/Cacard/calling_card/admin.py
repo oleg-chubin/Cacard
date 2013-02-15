@@ -22,11 +22,18 @@ class NewsAdmin(admin.ModelAdmin):
     list_display = ('date', 'title')
 
 
-class AdressAdmin(admin.ModelAdmin):
+class Adress_filialAdmin(admin.ModelAdmin):
     inlines = (
         TranslationInline, ImageInline,
     )
-    list_display = ('type_adr', 'title')
+    list_display = ('type', 'title')
+
+
+class Adress_typeAdmin(admin.ModelAdmin):
+    inlines = (
+        TranslationInline, ImageInline,
+    )
+    list_display = ('adress_type', 'title')
 
 
 class TareAdmin(admin.ModelAdmin):
@@ -94,7 +101,8 @@ class Feed_backAdmin(admin.ModelAdmin):
 
 
 admin.site.register(models.News, NewsAdmin)
-admin.site.register(models.Adress, AdressAdmin)
+admin.site.register(models.Adress_filial, Adress_filialAdmin)
+admin.site.register(models.Adress_type, Adress_typeAdmin)
 admin.site.register(models.Language, LanguageAdmin)
 admin.site.register(models.Tare, TareAdmin)
 admin.site.register(models.Brand, BrandAdmin)

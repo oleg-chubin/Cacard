@@ -12,14 +12,13 @@
             <img data-src="holder.js/300x200" class="img-rounded" alt="" src = '{{ MEDIA_URL }}{{new.info_image.thumbnail}}'>
         </div>
         {% endif %}
-
-        <div class="span6">
-          <h3>{{ new.title }}</h3>
-          {{ new.description|linebreaks }}
+          
           <div class="row">
-           <div class="span2 offset6"><span class="label">{{ new.date }}</span></div>
+           <div class="span8 offset8"><span class="label">{{ new.date }}</span></div>
            </div>
-         </div>
+          <h4>{{ new.title }}</h4>
+           {{ new.description|linebreaks }}
+        </br>
        </div>
       {% endfor %}
 

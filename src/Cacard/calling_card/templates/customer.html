@@ -16,7 +16,7 @@
 
 {% block content %}
   <div>
-    {% if context|length > 0 %}
+    {% if not need_url %}
       {% for info_item in context %}
         {% include "info_row.html" %}
       {% endfor %}
@@ -35,17 +35,14 @@
       {% endif %}
      </ul>
     </div>
+    
+    
     {% else %}
-      <h3> Rework me please </h3>
-      {% comment %}
-      {% if prodcat_item > 0 %}
-        <h3>{% trans "We don't have any goods in this category" %}</h3>
-      {% else %}
-        {% for info_item in brands %}
-          {% include "info_row.html" with info=brand%}
+      
+        {% for info_item in categorys %}
+          {% include "info_row.html" with info=brand %}
         {% endfor%}
-      {% endif %}
-      {% endcomment %}
+      
     {% endif %}
   </div>
 {% endblock %}
