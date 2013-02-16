@@ -23,49 +23,32 @@
 
 {% block content %}
 
-    <div id="about" class="row">
-      <div class="span8">
-              <h2> Более подробно о нашем бизнесе</h2>
-              <p> как вы знаете, наша компания уже годами работает на рынке</p>
-
-
-       </div>
-    </div>
-
-
-
-	 
-     {% for brand in brands %}
-    
-<div id = "TradeMark" class="row">           
-    <div class="span8">
-       <h4> {{ brand.title }} </h4> 
-     <div class="span2">
-     <p> 	{{ brand.description }}	</p>
-   </div> 
-          	
-        <div class="span2">
-        {% for prod_cat in product_categorys %}
-        <li>  <a href="{% url paged_product brand_id=brand.id prod=prod_cat.id %}">{{ prod_cat.title }} </a></li>
-       {% endfor %}
+<div id="about" class="row">
+  <div class="span8">
+          <h2> Более подробно о нашем бизнесе</h2>
+          <p> как вы знаете, наша компания уже годами работает на рынке</p>
    </div>
-        
-       {% if brand.info_image %}
-          <ul class="thumbnails" id="image_{{prod.id}}">
-              {% for image_info in brand.infoimage_set.all %}
-
-                <li class={% if forloop.first %}"span2"{% else %}"span1"{% endif %}>
-                  <a class="thumbnail" href="{{ MEDIA_URL }}{{image_info.image}}">
-                      <img data-src="holder.js/300x200" class="img-rounded" alt="" src = '{{ MEDIA_URL }}{{image_info.thumbnail}}'>
-                  </a>
-                </li>
-              {% endfor %}
-       {% endif %}
-    
-    </div>
 </div>
-      
-    {% endfor %}
-    
+
+<div class="row-fluid">
+<ul class="thumbnails">
+  {% for brand in brands %}
+    <li class="span6">
+      <div class="thumbnail">
+        <img data-src="holder.js/300x200" class="img-rounded" alt="" src = "{{ MEDIA_URL }}{{brand.infoimage_set.all.0.thumbnail}}">
+        <div class="caption">
+            <h4> {{ brand.title }} </h4>
+            <p>{{ brand.short_description }}</p>
+            <ul>
+              {% for prod_cat in product_categorys %}
+                 <li>  <a href="{% url paged_product brand_id=brand.id prod=prod_cat.id %}">{{ prod_cat.title }} </a></li>
+              {% endfor %}
+            </ul>
+        </div>
+      </div>
+    </li>
+  {% endfor %}
+</ul>
+</div>
 
 {% endblock %}

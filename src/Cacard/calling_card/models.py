@@ -20,21 +20,24 @@ class Language(models.Model):
         return u'%s' % (self.name)
 
 class Info(models.Model):
-    @property
-    def title(self):
+    def get_info_property(self, property_name):
         lang = get_language()
         translation = self.translation_set.filter(lang__code=lang[:2])
         if translation.count():
-            return translation[0].title
+            return getattr(translation[0], property_name)
         return ('No translation')
 
     @property
+    def title(self):
+        return self.get_info_property('title')
+
+    @property
+    def short_description(self):
+        return self.get_info_property('short_description')
+
+    @property
     def description(self):
-        lang = get_language()
-        translation = self.translation_set.filter(lang__code=lang[:2])
-        if translation.count():
-            return translation[0].description
-        return ('No translation')
+        return self.get_info_property('description')
 
     @property
     def info_image(self):
@@ -139,6 +142,7 @@ class ConsumerInfo(Info):
 class Translation(models.Model):
     info = models.ForeignKey(Info)
     title = models.CharField(max_length=250)
+    short_description = models.TextField()
     description = models.TextField()
     lang = models.ForeignKey(Language)
 
