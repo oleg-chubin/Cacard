@@ -40,7 +40,7 @@
     {% else %}
       
         {% for info_item in categorys %}
-          {% include "info_row.html" with info=brand %}
+          {% include "info_row.html" with info=brand urled_page="custom_title.html"%}
         {% endfor%}
       
     {% endif %}
