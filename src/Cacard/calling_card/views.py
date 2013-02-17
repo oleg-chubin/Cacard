@@ -1,9 +1,11 @@
 # Create your views here.
+
+from googlemaps import GoogleMaps
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from models import News, Product, Brand, ConsumerInfo
-from models import ConsumerCategory, ProductCategory, Adress
-from forms import Feed_back
+from models import ConsumerCategory, ProductCategory, Address
+from forms import ConsumerFeedback
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from operator import itemgetter
 
@@ -55,16 +57,23 @@ def about(request):
 @render_to("contacts.html")
 @top_level_menu("Contacts", "contacts", 6)
 def contacts(request):
-    contacts = Adress.objects.all()
+    contacts = []
+    gmaps = GoogleMaps('')
+    for addr in Address.objects.all():
+        lat, lng = gmaps.address_to_latlng(addr.address)
+        contacts.append({'contact':addr,
+                         'longitude': lng,
+                         'latitude': lat})
+
     need_form = True
     if request.method == 'POST':
-        form = Feed_back(request.POST)
+        form = ConsumerFeedback(request.POST)
         if form.is_valid():
             need_form = False
             form.save()
             return {'contacts': contacts, 'need_form': need_form}
     else:
-        form = Feed_back()
+        form = ConsumerFeedback()
     return {'contacts': contacts,
             'form': form,
             'need_form': need_form}

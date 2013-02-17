@@ -80,7 +80,7 @@ def resize_image_handler(sender, instance=None, **kwargs):
         instance.image = resize_uploaded_image(instance.image.file, 800)
 
 
-class Feed_back(models.Model):
+class ConsumerFeedback(models.Model):
     title = models.CharField(max_length=100)
     message = models.TextField()
     name = models.CharField(max_length=100)
@@ -147,14 +147,6 @@ class Translation(models.Model):
     description = models.TextField()
     lang = models.ForeignKey(Language)
 
-#    def save(self, *args, **kwargs):
-#        from django.core.exceptions import ValidationError
-#        if len(self.short_description.split(' ')) > 5:
-#            raise forms.ValidationError('Too long')
-#        else:
-#            super(Translation, self).save(*args, **kwargs)
-
-
 
 class News(Info):
     date = models.DateField()
@@ -163,33 +155,36 @@ class News(Info):
         ordering = ('-date',)
 
 
-class Adress(models.Model):
+class AddressType(models.Model):
+    name = models.CharField('Type of address', max_length=250)
+
+    def __unicode__(self):
+        return u'%s' % (self.name)
+
+
+class Address(models.Model):
+    address_type = models.ForeignKey(AddressType)
     phone = models.CharField(max_length=15)
     fax = models.CharField(max_length=15)
     e_mail = models.EmailField()
 
-    def get_adress_property(self, property_name):
+    def get_address_property(self, property_name):
         lang = get_language()
-        translation = self.adress_translation_set.filter(lang__code=lang[:2])
+        translation = self.addresstranslation_set.filter(lang__code=lang[:2])
         if translation.count():
             return getattr(translation[0], property_name)
         return ('No translation')
 
     @property
-    def type(self):
-        return self.get_adress_property('type')
-
-    @property
-    def adress(self):
-        return self.get_adress_property('adress')
+    def address(self):
+        return self.get_address_property('address_text')
 
     def __unicode__(self):
-        return u'%s' % (self.type)
+        return u'%s (%s)' % (self.address, self.address_type)
 
 
-class Adress_translation(models.Model):
-    adr = models.ForeignKey(Adress)
-    type = models.CharField('Type of adress', max_length=250)
-    adress = models.TextField('Adress')
+class AddressTranslation(models.Model):
+    address = models.ForeignKey(Address)
+    address_text = models.TextField('Address')
     lang = models.ForeignKey(Language)
 

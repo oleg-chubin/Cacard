@@ -24,15 +24,19 @@ class NewsAdmin(admin.ModelAdmin):
     list_display = ('date', 'title')
 
 
-class AdressInline(admin.TabularInline):
-    model = models.Adress_translation
+class AddressInline(admin.TabularInline):
+    model = models.AddressTranslation
 
 
-class AdressAdmin(admin.ModelAdmin):
+class AddressAdmin(admin.ModelAdmin):
     inlines = (
-        AdressInline,
+        AddressInline,
     )
-    list_display = ('type',)
+    list_display = ('address', 'address_type',)
+
+
+class AddressTypeAdmin(admin.ModelAdmin):
+    pass
 
 
 class TareAdmin(admin.ModelAdmin):
@@ -95,12 +99,13 @@ class LanguageAdmin(admin.ModelAdmin):
     list_display = ('name', 'code')
 
 
-class Feed_backAdmin(admin.ModelAdmin):
+class ConsumerFeedbackAdmin(admin.ModelAdmin):
     pass
 
 
 admin.site.register(models.News, NewsAdmin)
-admin.site.register(models.Adress, AdressAdmin)
+admin.site.register(models.Address, AddressAdmin)
+admin.site.register(models.AddressType, AddressTypeAdmin)
 admin.site.register(models.Language, LanguageAdmin)
 admin.site.register(models.Tare, TareAdmin)
 admin.site.register(models.Brand, BrandAdmin)
@@ -110,4 +115,4 @@ admin.site.register(models.ConsumerCategory, ConsumerCategoryAdmin)
 admin.site.register(models.ConsumerSubCategory, ConsumerSubCategoryAdmin)
 admin.site.register(models.ConsumerInfo, ConsumerInfoAdmin)
 admin.site.register(models.StorageCondition, StorageConditionAdmin)
-admin.site.register(models.Feed_back, Feed_backAdmin)
+admin.site.register(models.ConsumerFeedback, ConsumerFeedbackAdmin)

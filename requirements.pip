@@ -1,9 +1,9 @@
 -e .
 Django>1.4
+googlemaps == 1.0.2
 PyYAML==3.09
 South==0.7.3
 psycopg2==2.4
-PIL
 MySQL-python
 simplejson==2.3.0
 werkzeug==0.6.2

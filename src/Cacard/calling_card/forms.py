@@ -1,13 +1,13 @@
 from django import forms
-from models import Feed_back
+from models import ConsumerFeedback
 from models import Translation
 from django.core.exceptions import ValidationError
 
 
-class Feed_back(forms.ModelForm):
+class ConsumerFeedback(forms.ModelForm):
 
     class Meta:
-        model = Feed_back
+        model = ConsumerFeedback
         fields = ["title", "message", "name", "e_mail"]
 
 
