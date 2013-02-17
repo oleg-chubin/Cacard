@@ -1,6 +1,7 @@
 from StringIO import StringIO
 from PIL import ImageFile
 from django.db import models
+from django.forms import ModelForm
 from django.utils.translation import get_language
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
@@ -145,6 +146,14 @@ class Translation(models.Model):
     short_description = models.TextField()
     description = models.TextField()
     lang = models.ForeignKey(Language)
+
+#    def save(self, *args, **kwargs):
+#        from django.core.exceptions import ValidationError
+#        if len(self.short_description.split(' ')) > 5:
+#            raise forms.ValidationError('Too long')
+#        else:
+#            super(Translation, self).save(*args, **kwargs)
+
 
 
 class News(Info):

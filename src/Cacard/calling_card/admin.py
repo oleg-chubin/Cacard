@@ -5,10 +5,12 @@ Created on Feb 10, 2013
 '''
 from django.contrib import admin
 from . import models
+from . import forms
 
 
 class TranslationInline(admin.TabularInline):
     model = models.Translation
+    form = forms.Translation
 
 
 class ImageInline(admin.TabularInline):

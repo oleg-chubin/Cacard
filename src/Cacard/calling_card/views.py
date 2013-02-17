@@ -55,7 +55,7 @@ def about(request):
 @render_to("contacts.html")
 @top_level_menu("Contacts", "contacts", 6)
 def contacts(request):
-    contacts = Adress_filial.objects.all()
+    contacts = Adress.objects.all()
     need_form = True
     if request.method == 'POST':
         form = Feed_back(request.POST)
