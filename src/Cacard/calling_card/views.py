@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from models import News, Product, Brand, ConsumerInfo
-from models import ConsumerCategory, ProductCategory, Adress_filial
+from models import ConsumerCategory, ProductCategory, Adress
 from forms import Feed_back
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from operator import itemgetter

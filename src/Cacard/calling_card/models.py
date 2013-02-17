@@ -154,11 +154,33 @@ class News(Info):
         ordering = ('-date',)
 
 
-class Adress_type(Info):
+class Adress(models.Model):
+    phone = models.CharField(max_length=15)
+    fax = models.CharField(max_length=15)
+    e_mail = models.EmailField()
+
+    def get_adress_property(self, property_name):
+        lang = get_language()
+        translation = self.adress_translation_set.filter(lang__code=lang[:2])
+        if translation.count():
+            return getattr(translation[0], property_name)
+        return ('No translation')
+
+    @property
+    def type(self):
+        return self.get_adress_property('type')
+
+    @property
+    def adress(self):
+        return self.get_adress_property('adress')
 
     def __unicode__(self):
-        return u'%s' % (self.title)
+        return u'%s' % (self.type)
 
 
-class Adress_filial(Info):
-    type = models.ForeignKey(Adress_type)
+class Adress_translation(models.Model):
+    adr = models.ForeignKey(Adress)
+    type = models.CharField('Type of adress', max_length=250)
+    adress = models.TextField('Adress')
+    lang = models.ForeignKey(Language)
+
