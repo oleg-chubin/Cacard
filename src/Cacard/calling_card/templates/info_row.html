@@ -1,3 +1,5 @@
+{% load i18n  %}
+
 <div class="row">
 <div class="accordion" id="accordion2">
   {% if info_item.info_image %}
@@ -16,29 +18,29 @@
   {% else %}
   <div class="span8">
   {% endif %}
-    
+
     {% if need_url %}
       {% include urled_page %}
     {% else %}
       <h3>{{ info_item.title }}</h3>
     {% endif %}
-    
+
     <h4>{{ info_item.brand }}</h4>
 
-
-<div class="accordion-group">
-  <div class="accordion-heading">
-   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-    <p>{{ info_item.description|truncatewords_html:10  }}</p>
-</a>
-</div>
-<div id="collapseOne" class="accordion-body">
-<div class="accordion-inner">
-{{ info_item.description }}
-</div>
-</div>
-
-
+    <div class="description-container">
+      <div class="info-description short-description">
+        {{ info_item.short_description }}
+        <p>
+          <a href="#">{% trans "Show full description" %}</a>
+        </p>
+      </div>
+      <div  class="info-description full-description">
+      {{ info_item.description }}
+        <p>
+          <a href="#">{% trans "Show short description" %}</a>
+        </p>
+      </div>
+    </div>
     {% block extra_info_details %}
     {% endblock extra_info_details %}
   </div>

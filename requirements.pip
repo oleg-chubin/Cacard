@@ -1,6 +1,7 @@
 -e .
 Django>1.4
 googlemaps == 1.0.2
+yandex-maps ==
 PyYAML==3.09
 South==0.7.3
 psycopg2==2.4
