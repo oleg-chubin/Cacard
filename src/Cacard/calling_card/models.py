@@ -13,12 +13,75 @@ from django.core.files.uploadedfile import UploadedFile, InMemoryUploadedFile
 
 PORTION_SIZE = 1024
 
+
+class CommonDate(models.Model):
+    def get_common_date_property(self, property_name):
+        date_rule = self.daterule_set.all()
+        return getattr(date_rule[0], property_name)
+
+    @property
+    def start_date(self):
+        return self.get_common_date_property('start_date')
+
+    @property
+    def end_date(self):
+        return self.get_common_date_property('end_date')
+
+    @property
+    def period(self):
+        return self.get_common_date_property('period')
+
+    @property
+    def is_available(self):
+        return self.get_common_date_property('is_available')
+
+    @property
+    def priority(self):
+        return self.get_common_date_property('priority')
+
+    @property
+    def duration_discreteness(self):
+        return self.get_common_date_property('duration_discreteness')
+
+
+class DateRule(models.Model):
+    common_date = models.ForeignKey(CommonDate)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    period = models.IntegerField()
+    is_available = models.BooleanField()
+    priority = models.IntegerField()
+    duration_discreteness = models.IntegerField()
+
+
+class Order(models.Model):
+    order_id = models.IntegerField()
+#    client_id =
+
+
+class OrderProduct(models.Model):
+    order = models.ForeignKey(Order)
+
+
+class DesiredDate(CommonDate):
+    order_product = models.ForeignKey(OrderProduct)
+
+
+class ReservedDate(CommonDate):
+    order_product = models.ForeignKey(OrderProduct)
+
+
+class AvailableDate(CommonDate):
+    pass
+
+
 class Language(models.Model):
     name = models.CharField(max_length=25)
     code = models.CharField(max_length=4)
 
     def __unicode__(self):
         return u'%s' % (self.name)
+
 
 class Info(models.Model):
     def get_info_property(self, property_name):
@@ -53,6 +116,7 @@ class InfoImage(models.Model):
     priority = models.IntegerField()
     info = models.ForeignKey(Info)
 
+
 def resize_uploaded_image(initial_image, max_size):
     thumb_file = initial_image
     parser = ImageFile.Parser()
@@ -69,6 +133,7 @@ def resize_uploaded_image(initial_image, max_size):
     return InMemoryUploadedFile(thumb, "field_name",
                                 thumb_file.name, thumb_file.content_type,
                                 thumb.len, thumb_file.charset)
+
 
 @receiver(pre_save, sender=InfoImage)
 def resize_image_handler(sender, instance=None, **kwargs):
@@ -121,6 +186,8 @@ class Product(Info):
     brand = models.ForeignKey(Brand)
     productcategory = models.ForeignKey(ProductCategory)
     storagecondition = models.ForeignKey(StorageCondition)
+    order_product = models.ForeignKey(OrderProduct)
+    available_date = models.ManyToManyField(AvailableDate)
 
 
 class ConsumerCategory(Info):
@@ -187,4 +254,3 @@ class AddressTranslation(models.Model):
     address = models.ForeignKey(Address)
     address_text = models.TextField('Address')
     lang = models.ForeignKey(Language)
-

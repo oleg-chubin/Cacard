@@ -103,6 +103,39 @@ class ConsumerFeedbackAdmin(admin.ModelAdmin):
     pass
 
 
+class DateRuleInLine(admin.TabularInline):
+    model = models.DateRule
+
+
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('order_id',)
+
+
+class OrderProductAdmin(admin.ModelAdmin):
+    pass
+
+
+class DesiredDateAdmin(admin.ModelAdmin):
+    inlines = (
+        DateRuleInLine,
+    )
+    list_display = ('start_date', 'end_date')
+
+
+class ReservedDateAdmin(admin.ModelAdmin):
+    inlines = (
+        DateRuleInLine,
+    )
+    list_display = ('start_date', 'end_date')
+
+
+class AvailableDateAdmin(admin.ModelAdmin):
+    inlines = (
+        DateRuleInLine,
+    )
+    list_display = ('start_date', 'end_date')
+
+
 admin.site.register(models.News, NewsAdmin)
 admin.site.register(models.Address, AddressAdmin)
 admin.site.register(models.AddressType, AddressTypeAdmin)
@@ -116,3 +149,9 @@ admin.site.register(models.ConsumerSubCategory, ConsumerSubCategoryAdmin)
 admin.site.register(models.ConsumerInfo, ConsumerInfoAdmin)
 admin.site.register(models.StorageCondition, StorageConditionAdmin)
 admin.site.register(models.ConsumerFeedback, ConsumerFeedbackAdmin)
+#admin.site.register(models.DateRule, DateRuleAdmin)
+admin.site.register(models.Order, OrderAdmin)
+admin.site.register(models.OrderProduct, OrderProductAdmin)
+admin.site.register(models.DesiredDate, DesiredDateAdmin)
+admin.site.register(models.ReservedDate, ReservedDateAdmin)
+admin.site.register(models.AvailableDate, AvailableDateAdmin)
