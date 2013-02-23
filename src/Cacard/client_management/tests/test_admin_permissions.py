@@ -8,6 +8,9 @@ from BeautifulSoup import BeautifulSoup
 from django.contrib.auth.models import User
 from django.test.client import Client
 
+from Cacard.client_management import utils
+
+
 class UserTest(TestCase):
     user = 'fakeuser'
     password = 'fakepass'
@@ -32,12 +35,11 @@ class UserTest(TestCase):
 
 class TestOpenSomething(UserTest):
     def setUp(self):
+        utils.create_client_infrastructure(self.user)
         super(TestOpenSomething, self).setUp()
-        self.user
 
     def test(self):
         res = self.client.get('/admin/calling_card/brand/')
-#        import ipdb; ipdb.set_trace()
         self.assertEqual(res.status_code, 200)
         self.check_presence(res.content, 'title',
                             find_all=['Select brand to change'])
