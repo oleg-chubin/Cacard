@@ -15,33 +15,30 @@ PORTION_SIZE = 1024
 
 
 class CommonDate(models.Model):
-    def get_common_date_property(self, property_name):
-        date_rule = self.daterule_set.all()
-        return getattr(date_rule[0], property_name)
+    pass
+#    @property
+#    def start_date(self):
+#        return getattr(self.daterule_set.all(), 'start_date') # self.daterule_set_property('start_date')
 
-    @property
-    def start_date(self):
-        return self.get_common_date_property('start_date')
+#    @property
+#    def end_date(self):
+#        return self.get_common_date_property('end_date')
 
-    @property
-    def end_date(self):
-        return self.get_common_date_property('end_date')
+#    @property
+#    def period(self):
+#        return self.get_common_date_property('period')
 
-    @property
-    def period(self):
-        return self.get_common_date_property('period')
+#    @property
+#    def is_available(self):
+#        return self.get_common_date_property('is_available')
 
-    @property
-    def is_available(self):
-        return self.get_common_date_property('is_available')
+#    @property
+#    def priority(self):
+#        return self.get_common_date_property('priority')
 
-    @property
-    def priority(self):
-        return self.get_common_date_property('priority')
-
-    @property
-    def duration_discreteness(self):
-        return self.get_common_date_property('duration_discreteness')
+#    @property
+#    def duration_discreteness(self):
+#        return self.get_common_date_property('duration_discreteness')
 
 
 class DateRule(models.Model):
