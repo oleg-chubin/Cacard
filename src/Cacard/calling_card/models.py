@@ -16,39 +16,17 @@ PORTION_SIZE = 1024
 
 class CommonDate(models.Model):
     pass
-#    @property
-#    def start_date(self):
-#        return getattr(self.daterule_set.all(), 'start_date') # self.daterule_set_property('start_date')
-
-#    @property
-#    def end_date(self):
-#        return self.get_common_date_property('end_date')
-
-#    @property
-#    def period(self):
-#        return self.get_common_date_property('period')
-
-#    @property
-#    def is_available(self):
-#        return self.get_common_date_property('is_available')
-
-#    @property
-#    def priority(self):
-#        return self.get_common_date_property('priority')
-
-#    @property
-#    def duration_discreteness(self):
-#        return self.get_common_date_property('duration_discreteness')
 
 
 class DateRule(models.Model):
+    DURATION = ((1, "Day"), (2, "Hour"), (3, "Half Hour"))
     common_date = models.ForeignKey(CommonDate)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     period = models.IntegerField()
     is_available = models.BooleanField()
     priority = models.IntegerField()
-    duration_discreteness = models.IntegerField()
+    duration_discreteness = models.IntegerField(choices=DURATION, default=1)
 
 
 class Order(models.Model):
