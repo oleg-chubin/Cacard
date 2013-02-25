@@ -3,10 +3,7 @@ def check_availability(common, start_date, end_date):
     if end_date < start_date:
         return False
     # at first make testing available for month
-    month = [0 for x in range(33)]
-    year = []
-    for x in range(14):
-        year.append(month)
+    year = [[0 for x in range(33)] for x in range(14)]
 #    if end_date.day - start_date < common.daterule_set.all()[0].start_date.toordinal():
 #        return False
 
