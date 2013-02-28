@@ -291,7 +291,7 @@ class TestEdge(TestDateAvailable):
         self.is_avail(start_date, end_date, True)
 
     def test_day_priority_start(self):
-        start_date = datetime.datetime(2013, 2, 16, 8, 0, 0)
+        start_date = datetime.datetime(2013, 2, 16, 21, 0, 0)
         end_date = datetime.datetime(2013, 2, 20, 8, 0, 0)
         self.is_avail(start_date, end_date, True)
 
@@ -314,3 +314,24 @@ class TestEdge(TestDateAvailable):
         start_date = datetime.datetime(2013, 2, 21, 8, 0, 0)
         end_date = datetime.datetime(2013, 2, 21, 10, 0, 0)
         self.is_avail(start_date, end_date, True)
+
+
+class TestIsAvailableWithBlock(TestDateAvailable):
+    def setUp(self):
+        self.initial_date = [{'start':datetime.datetime(2013, 1, 1, 9, 0, 0),
+                              'end':datetime.datetime(2013, 1, 3, 9, 0, 0),
+                              'is_available':True, 'priority':1},
+                             {'start':datetime.datetime(2013, 1, 5, 9, 0, 0),
+                              'end':datetime.datetime(2013, 1, 7, 9, 0, 0),
+                              'is_available':True, 'priority':1},
+                             {'start':datetime.datetime(2013, 1, 3, 9, 0, 0),
+                              'end':datetime.datetime(2013, 1, 5, 9, 0, 0),
+                              'is_available':True, 'priority':1}
+                             ]
+        super(TestIsAvailableWithBlock, self).setUp()
+
+    def test_day(self):
+        start_date = datetime.datetime(2013, 1, 2)
+        end_date = datetime.datetime(2013, 1, 7)
+        self.is_avail(start_date, end_date, True)
+

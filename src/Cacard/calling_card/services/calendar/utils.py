@@ -1,51 +1,31 @@
 def check_availability(common, start_date, end_date):
-    # TODO: rework with time.mktime(t)
     if end_date < start_date:
         return False
-    # at first make testing available for month
-    year = [[0 for x in range(33)] for x in range(14)]
-#    if end_date.day - start_date < common.daterule_set.all()[0].start_date.toordinal():
-#        return False
-
+    avail_date = []
     for avail in common:
         for date in avail.daterule_set.all():
-            if date.duration_discreteness == 1:
-                if date.start_date.month == date.end_date.month:
-                    for day_av in range(date.start_date.day, date.end_date.day + 1):
-                        year[date.start_date.month][day_av] = 1
-                elif date.end_date.month - date.start_date.month == 1:
-                    for day_av in range(date.start_date.day, 32):
-                        year[date.start_date.month][day_av] = 1
-                    for day_av in range(1, date.end_date.day + 1):
-                        year[date.end_date.month][day_av] = 1
-                else:
-                    for day_av in range(date.start_date.day, 32):
-                        year[date.start_date.month][day_av] = 1
-                    for month_av in range(date.start_date.month + 1, date.end_date.month):
-                        for day_av in range(1, 32):
-                            year[month_av][day_av] = 1
-                    for day_av in range(1, date.end_date.day + 1):
-                        year[date.end_date.month][day_av] = 1
-    if start_date.month == end_date.month:
-        for x in range(start_date.day, end_date.day + 1):
-            if year[start_date.month][x] == 0:
-                return False
-    elif end_date.month - start_date.month == 1:
-        for x in range(start_date.day, 32):
-            if year[start_date.month][x] == 0:
-                return False
-        for x in range(1, end_date.day):
-            if year[end_date.month][x] == 0:
-                return False
-    else:
-        for x in range(start_date.day, 32):
-            if year[start_date.month][x] == 0:
-                return False
-        for month in range(start_date.month + 1, end_date.month):
-            for day in range(1, 32):
-                if year[month][day] == 0:
+            avail_date.append([date.priority, {'start':date.start_date,
+                            'end':date.end_date, 'is_available':date.is_available}])
+    avail_date.sort(reverse=True)
+
+    to_check = [start_date, end_date]
+    for item in avail_date:
+        if item[1]['is_available'] == False:
+            for i in range(0, len(to_check), 2):
+                if ((item[1]['start'] < to_check[i] < item[1]['end']) or
+                    (item[1]['start'] < to_check[i + 1] < item[1]['end'])) and to_check[i] != to_check[i + 1]:
                     return False
-        for x in range(1, end_date.day + 1):
-            if year[end_date.month][x] == 0:
-                return False
+        else:
+            for i in range(0, len(to_check), 2):
+                if item[1]['start'] <= to_check[i] <= to_check[i + 1] <= item[1]['end']:
+                    to_check[i] = to_check[i + 1]
+                elif item[1]['start'] <= to_check[i] <= item[1]['end'] and item[1]['end'] <= to_check[i + 1]:
+                    to_check[i] = item[1]['end']
+                elif item[1]['start'] <= to_check[i + 1] <= item[1]['end'] and to_check[i] <= item[1]['start']:
+                    to_check[i + 1] = item[1]['start']
+                if to_check[i] <= item[1]['start'] <= item[1]['end'] <= to_check[i+1]:
+                    to_check[i + 1:i + 1] = [item[1]['start'], item[1]['end']]
+    for i in range(0, len(to_check), 2):
+        if to_check[i] != to_check[i + 1]:
+            return False
     return True
