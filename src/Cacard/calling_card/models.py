@@ -7,12 +7,19 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.core.files.uploadedfile import UploadedFile, InMemoryUploadedFile
 
-
+from Cacard.client_management.models import Client
 # Create your models here.
 
 
 PORTION_SIZE = 1024
 
+
+class ClientAwareModel(models.Model):
+    client = models.ForeignKey(Client,
+                               related_name="%(app_label)s_%(class)s_related")
+
+    class Meta:
+        abstract = True
 
 class CommonDate(models.Model):
     pass
@@ -58,7 +65,7 @@ class Language(models.Model):
         return u'%s' % (self.name)
 
 
-class Info(models.Model):
+class Info(ClientAwareModel):
     def get_info_property(self, property_name):
         lang = get_language()
         translation = self.translation_set.filter(lang__code=lang[:2])
@@ -120,7 +127,7 @@ def resize_image_handler(sender, instance=None, **kwargs):
         instance.image = resize_uploaded_image(instance.image.file, 800)
 
 
-class ConsumerFeedback(models.Model):
+class ConsumerFeedback(ClientAwareModel):
     title = models.CharField(max_length=100)
     message = models.TextField()
     name = models.CharField(max_length=100)
@@ -130,7 +137,7 @@ class ConsumerFeedback(models.Model):
         return u'%s' % (self.title)
 
 
-class Tare(Info):
+class Tare(ClientAwareModel):
     name = models.CharField(max_length=25)
     capacity = models.IntegerField()
     in_box = models.IntegerField('Max count in box')
@@ -204,7 +211,7 @@ class AddressType(models.Model):
         return u'%s' % (self.name)
 
 
-class Address(models.Model):
+class Address(ClientAwareModel):
     address_type = models.ForeignKey(AddressType)
     phone = models.CharField(max_length=15)
     fax = models.CharField(max_length=15)

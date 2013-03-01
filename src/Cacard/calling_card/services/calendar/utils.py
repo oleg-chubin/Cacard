@@ -1,31 +1,23 @@
 def check_availability(common, start_date, end_date):
     if end_date < start_date:
         return False
-    avail_date = []
-    for avail in common:
-        for date in avail.daterule_set.all():
-            avail_date.append([date.priority, {'start':date.start_date,
-                            'end':date.end_date, 'is_available':date.is_available}])
-    avail_date.sort(reverse=True)
+    data_set = common.daterule_set.values('priority', 'start_date',
+                                          'end_date', 'is_available')
+    expected = [{'start_date':start_date, 'end_date':end_date}]
 
-    to_check = [start_date, end_date]
-    for item in avail_date:
-        if item[1]['is_available'] == False:
-            for i in range(0, len(to_check), 2):
-                if ((item[1]['start'] < to_check[i] < item[1]['end']) or
-                    (item[1]['start'] < to_check[i + 1] < item[1]['end'])) and to_check[i] != to_check[i + 1]:
+    for data in sorted(data_set, key=lambda x:x['priority'], reverse=True):
+        for i, portion in enumerate(expected):
+            if (portion['start_date'] < data['end_date']
+                and portion['end_date'] > data['start_date']):
+                if not data['is_available']:
                     return False
-        else:
-            for i in range(0, len(to_check), 2):
-                if item[1]['start'] <= to_check[i] <= to_check[i + 1] <= item[1]['end']:
-                    to_check[i] = to_check[i + 1]
-                elif item[1]['start'] <= to_check[i] <= item[1]['end'] and item[1]['end'] <= to_check[i + 1]:
-                    to_check[i] = item[1]['end']
-                elif item[1]['start'] <= to_check[i + 1] <= item[1]['end'] and to_check[i] <= item[1]['start']:
-                    to_check[i + 1] = item[1]['start']
-                if to_check[i] <= item[1]['start'] <= item[1]['end'] <= to_check[i+1]:
-                    to_check[i + 1:i + 1] = [item[1]['start'], item[1]['end']]
-    for i in range(0, len(to_check), 2):
-        if to_check[i] != to_check[i + 1]:
-            return False
-    return True
+                expected[i:i + 1] = [{'start_date':portion['start_date'],
+                                      'end_date':data['start_date']},
+                                     {'start_date':data['end_date'],
+                                      'end_date':portion['end_date']}]
+            #portion         S___________E
+            #data              S--------E
+        expected = [i for i in expected if i['start_date'] < i['end_date']]
+        if not expected:
+            return True
+    return False

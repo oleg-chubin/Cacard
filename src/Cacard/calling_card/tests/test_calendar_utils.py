@@ -8,8 +8,8 @@ from django.utils import timezone
 class TestDateAvailable(TestCase):
     def setUp(self):
         if len(self.initial_date) > 0:
+            self.availdate = AvailableDate()
             for data in self.initial_date:
-                self.availdate = AvailableDate()
                 self.availdate.save()
                 self.dr = DateRule(start_date=data['start'].replace(tzinfo=timezone.utc),
                      end_date=data['end'].replace(tzinfo=timezone.utc),
@@ -17,13 +17,14 @@ class TestDateAvailable(TestCase):
                      duration_discreteness=1, common_date=self.availdate)
                 self.dr.save()
 
-    def is_avail(self, start_date, end_date, test_result):
-        self.assertEqual(check_availability(AvailableDate.objects.all(),
-                        start_date.replace(tzinfo=timezone.utc), 
-                        end_date.replace(tzinfo=timezone.utc)), test_result)
+    def is_avail(self, start_date, end_date, expected_result):
+        test_result = check_availability(self.availdate,
+                                         start_date.replace(tzinfo=timezone.utc),
+                                         end_date.replace(tzinfo=timezone.utc))
+        self.assertEqual(test_result, expected_result)
 
     def tearDown(self):
-        AvailableDate.objects.all().delete()
+        self.availdate.delete()
 
 
 class TestIsAvailable(TestDateAvailable):
