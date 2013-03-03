@@ -40,10 +40,7 @@ class AddressTypeAdmin(admin.ModelAdmin):
 
 
 class TareAdmin(admin.ModelAdmin):
-    inlines = (
-        TranslationInline, ImageInline,
-    )
-    list_display = ('title',)
+    pass
 
 
 class StorageConditionAdmin(admin.ModelAdmin):
@@ -119,21 +116,18 @@ class DesiredDateAdmin(admin.ModelAdmin):
     inlines = (
         DateRuleInLine,
     )
-    list_display = ('start_date', 'end_date')
 
 
 class ReservedDateAdmin(admin.ModelAdmin):
     inlines = (
         DateRuleInLine,
     )
-    list_display = ('start_date', 'end_date')
 
 
 class AvailableDateAdmin(admin.ModelAdmin):
     inlines = (
         DateRuleInLine,
     )
-    list_display = ('start_date', 'end_date')
 
 
 admin.site.register(models.News, NewsAdmin)

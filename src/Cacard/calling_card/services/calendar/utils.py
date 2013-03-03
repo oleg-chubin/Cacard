@@ -1,11 +1,19 @@
-def check_availability(common, start_date, end_date):
-    if end_date < start_date:
+from itertools import chain
+
+
+def check_availability(common, desire, reserves):
+    desire_set = desire.daterule_set.values('priority', 'start_date',
+                                          'end_date', 'is_available')
+    expected = [{'start_date':desire_set[0]['start_date'],
+                 'end_date':desire_set[0]['end_date']}]
+    if desire_set[0]['end_date'] < desire_set[0]['start_date']:
         return False
     data_set = common.daterule_set.values('priority', 'start_date',
                                           'end_date', 'is_available')
-    expected = [{'start_date':start_date, 'end_date':end_date}]
-
-    for data in sorted(data_set, key=lambda x:x['priority'], reverse=True):
+    reserve_set = reserves.daterule_set.values('priority', 'start_date',
+                                          'end_date', 'is_available')
+    for data in chain(reserve_set,
+                      sorted(data_set, key=lambda x:x['priority'], reverse=True)):
         for i, portion in enumerate(expected):
             if (portion['start_date'] < data['end_date']
                 and portion['end_date'] > data['start_date']):
