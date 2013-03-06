@@ -1,14 +1,43 @@
 from unittest import TestCase
 import datetime
 from Cacard.calling_card.services.calendar.utils import check_availability
-from Cacard.calling_card.models import AvailableDate, DesiredDate, ReservedDate
-from Cacard.calling_card.models import DateRule, Order, OrderProduct
+from Cacard.calling_card.models import *
+#from Cacard.calling_card.models import DateRule, Order, OrderProduct
 from django.utils import timezone
 
 
 class TestDateAvailable(TestCase):
     def setUp(self):
         if len(self.initial_date) > 0:
+            self.lan = Language(name='English', code='en')
+            self.lan.save()
+            self.tar = Tare(name='Tar1', capacity=1, in_box=10)
+            self.tar.save()
+            self.brand = Brand()
+            self.brand.save()
+            self.brand_info = Translation(info=self.brand, title = 'Brand1', short_description = 'Brand1',
+                             description = 'Brand1', lang = self.lan)
+            self.brand_info.save()
+            self.pr_cut = ProductCategory()
+            self.pr_cut.save()
+            self.pr_cut_info = Translation(info=self.pr_cut, title = 'pr_cut1', short_description = 'pr_cut1',
+                             description = 'pr_cut1', lang = self.lan)
+            self.pr_cut_info.save()
+            self.stor = StorageCondition()
+            self.stor.save()
+            self.stor_info = Translation(info=self.stor, title = 'stor1', short_description = 'stor1',
+                             description = 'stor1', lang = self.lan)
+            self.stor_info.save()
+            self.order = Order(order_id=3)
+            self.order.save()
+            self.order_product = OrderProduct(order=self.order)
+            self.order_product.save()
+            self.prod = Product(brand=self.brand, productcategory=self.pr_cut,
+                                storagecondition=self.stor, order_product=self.order_product)
+            self.prod.save()
+            self.prod_info = Translation(info=self.prod, title = 'prod1', short_description = 'prod1',
+                             description = 'prod1', lang = self.lan)
+            self.prod_info.save()
             self.availdate = AvailableDate()
             for data in self.initial_date:
                 self.availdate.save()
@@ -17,12 +46,9 @@ class TestDateAvailable(TestCase):
                      period=1, is_available=data['is_available'], priority=data['priority'],
                      duration_discreteness=1, common_date=self.availdate)
                 self.dr.save()
+            self.prod.available_date.add(self.availdate)
 
         if len(self.reserved_date) > 0:
-            self.order = Order(order_id=3)
-            self.order.save()
-            self.order_product = OrderProduct(order=self.order)
-            self.order_product.save()
             self.reserve = ReservedDate()
             for data in self.reserved_date:
                 self.reserve.order_product = self.order_product
@@ -35,10 +61,6 @@ class TestDateAvailable(TestCase):
 
     def is_avail(self, desired_date, expected_result):
         if len(desired_date) > 0:
-            self.order = Order(order_id=2)
-            self.order.save()
-            self.order_product = OrderProduct(order=self.order)
-            self.order_product.save()
             self.desire = DesiredDate()
             for data in desired_date:
                 self.desire.order_product = self.order_product
@@ -48,7 +70,7 @@ class TestDateAvailable(TestCase):
                      period=1, is_available=True, priority=0,
                      duration_discreteness=1, common_date=self.desire)
                 self.dsr.save()
-        test_result = check_availability(self.availdate, self.desire, self.reserve)
+        test_result = check_availability(self.prod)
         self.assertEqual(test_result, expected_result)
 
     def tearDown(self):

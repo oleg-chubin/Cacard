@@ -14,12 +14,12 @@ from Cacard.client_management.models import Client
 PORTION_SIZE = 1024
 
 
-class ClientAwareModel(models.Model):
-    client = models.ForeignKey(Client,
-                               related_name="%(app_label)s_%(class)s_related")
-
-    class Meta:
-        abstract = True
+#class ClientAwareModel(models.Model):
+#    client = models.ForeignKey(Client,
+#                               related_name="%(app_label)s_%(class)s_related")
+#
+#    class Meta:
+#        abstract = True
 
 class CommonDate(models.Model):
     pass
@@ -65,7 +65,8 @@ class Language(models.Model):
         return u'%s' % (self.name)
 
 
-class Info(ClientAwareModel):
+#class Info(ClientAwareModel):
+class Info(models.Model):
     def get_info_property(self, property_name):
         lang = get_language()
         translation = self.translation_set.filter(lang__code=lang[:2])
@@ -127,7 +128,8 @@ def resize_image_handler(sender, instance=None, **kwargs):
         instance.image = resize_uploaded_image(instance.image.file, 800)
 
 
-class ConsumerFeedback(ClientAwareModel):
+#class ConsumerFeedback(ClientAwareModel):
+class ConsumerFeedback(models.Model):
     title = models.CharField(max_length=100)
     message = models.TextField()
     name = models.CharField(max_length=100)
@@ -137,7 +139,8 @@ class ConsumerFeedback(ClientAwareModel):
         return u'%s' % (self.title)
 
 
-class Tare(ClientAwareModel):
+#class Tare(ClientAwareModel):
+class Tare(models.Model):
     name = models.CharField(max_length=25)
     capacity = models.IntegerField()
     in_box = models.IntegerField('Max count in box')
@@ -211,7 +214,8 @@ class AddressType(models.Model):
         return u'%s' % (self.name)
 
 
-class Address(ClientAwareModel):
+#class Address(ClientAwareModel):
+class Address(models.Model):
     address_type = models.ForeignKey(AddressType)
     phone = models.CharField(max_length=15)
     fax = models.CharField(max_length=15)
