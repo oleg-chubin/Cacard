@@ -6,6 +6,8 @@ def check_availability(product):
     desire_set = DateRule.objects.filter(common_date__desireddate__order_product__product=product)
     reserve_set = DateRule.objects.filter(common_date__reserveddate__order_product__product=product)
 #    import ipdb; ipdb.set_trace()
+    if not desire_set or not data_set:
+        return False
     expected = [{'start_date':desire_set[0].start_date,
                  'end_date':desire_set[0].end_date}]
     if desire_set[0].end_date < desire_set[0].start_date:
