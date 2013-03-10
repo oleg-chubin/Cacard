@@ -146,3 +146,8 @@ def admin(request):
     return {}
 
 
+@render_to("order.html")
+@top_level_menu("Contacts", "contacts", 6)
+def order(request):
+    return {}
+

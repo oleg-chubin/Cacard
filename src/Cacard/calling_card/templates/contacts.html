@@ -2,9 +2,16 @@
 {% load i18n  %}
 {% block content %}
 
+
 <div id="contacts">
 
       <h2> {% trans "Contacts" %} </h2>
+  <div id="make_order">
+	<p>
+	 <a href="/order" class="btn btn-primary"><i class="icon-pencil icon-white"></i>{% trans " Online Order" %}</a>	
+	</p>
+  </div>
+
       {% for item in contacts %}
         <h3>{{ item.contact.address_type }}</h3>
         <h5  class="text-success">{{ item.contact.title }}</h5>
@@ -23,8 +30,10 @@
 
       {% endfor %}
 </br>
-    {% if need_form %}
 
+<div id="feedback">
+    {% if need_form %}
+<div id="feedback">
 <h2> {% trans "Please leave feedback" %} </h2>
 <form action="/contacts/" method="post">
   {% csrf_token %}
@@ -38,6 +47,7 @@
     <h2>  {% trans "Thanks for your feedback"%}</h2>
     {% endif%}
 
+</div>
 </div>
 {% endblock %}
 
