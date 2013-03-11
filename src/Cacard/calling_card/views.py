@@ -8,6 +8,8 @@ from models import ConsumerCategory, ProductCategory, Address
 from forms import ConsumerFeedback
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from operator import itemgetter
+import datetime
+from django.utils import timezone
 
 menu_register = {}
 
@@ -149,5 +151,18 @@ def admin(request):
 @render_to("order.html")
 @top_level_menu("Contacts", "contacts", 6)
 def order(request):
-    return {}
+    avail_date = [{'start':datetime.datetime.today()+datetime.timedelta(days=2),
+                  'end':datetime.datetime.today()+datetime.timedelta(days=2),
+                  'name':'Event 1'},
+                  {'start':datetime.datetime.today()-datetime.timedelta(days=2),
+                  'end':datetime.datetime.today()-datetime.timedelta(days=2),
+                  'name':'Event 2'},
+                  {'start':datetime.datetime.today()-datetime.timedelta(days=5),
+                  'end':datetime.datetime.today()-datetime.timedelta(days=3),
+                  'name':'Event 3'},
+                  {'start':datetime.datetime.today()+datetime.timedelta(days=4),
+                  'end':datetime.datetime.today()+datetime.timedelta(days=5),
+                  'name':'Event 4'},
+                  ]
+    return {'avail_date':avail_date}
 
