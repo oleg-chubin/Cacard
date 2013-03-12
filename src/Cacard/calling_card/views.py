@@ -150,19 +150,24 @@ def admin(request):
 
 @render_to("order.html")
 @top_level_menu("Contacts", "contacts", 6)
-def order(request):
+def order(request, st_year=2013, st_month=01, st_day=01,
+          end_year=2013, end_month=01, end_day=01, name = 'Not'):
     avail_date = [{'start':datetime.datetime.today()+datetime.timedelta(days=2),
                   'end':datetime.datetime.today()+datetime.timedelta(days=2),
                   'name':'Event 1'},
-                  {'start':datetime.datetime.today()-datetime.timedelta(days=2),
-                  'end':datetime.datetime.today()-datetime.timedelta(days=2),
-                  'name':'Event 2'},
-                  {'start':datetime.datetime.today()-datetime.timedelta(days=5),
-                  'end':datetime.datetime.today()-datetime.timedelta(days=3),
-                  'name':'Event 3'},
-                  {'start':datetime.datetime.today()+datetime.timedelta(days=4),
-                  'end':datetime.datetime.today()+datetime.timedelta(days=5),
-                  'name':'Event 4'},
+#                  {'start':datetime.datetime.today()-datetime.timedelta(days=2),
+#                  'end':datetime.datetime.today()-datetime.timedelta(days=2),
+#                  'name':'Event 2'},
+#                  {'start':datetime.datetime.today()-datetime.timedelta(days=5),
+#                  'end':datetime.datetime.today()-datetime.timedelta(days=3),
+#                  'name':'Event 3'},
+#                  {'start':datetime.datetime.today()+datetime.timedelta(days=4),
+#                  'end':datetime.datetime.today()+datetime.timedelta(days=5),
+#                  'name':'Event 4'},
+                  {'start':datetime.datetime(int(st_year), int(st_month)+1, int(st_day)),
+                  'end':datetime.datetime(int(end_year), int(end_month)+1, int(end_day)),
+                  'name':name},
+
                   ]
     return {'avail_date':avail_date}
 

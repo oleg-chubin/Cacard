@@ -26,28 +26,23 @@
 			selectable: true,
 			selectHelper: true,
 			select: function(start, end, allDay) {
-				var title = prompt('Event Title:');
+				var title = prompt('Enter your name:');
 				if (title) {
-					calendar.fullCalendar('renderEvent',
-						{
-							title: title,
-							start: start,
-							end: end,
-							allDay: allDay
-						},
-						true // make the event "stick"
-					);
+					window.location.replace("/order/"+start.getFullYear()+"/"+start.getMonth()+"/"+start.getDate()+"/"+
+					end.getFullYear()+"/"+end.getMonth()+"/"+end.getDate()+"/"+title); 
+					
 				}
 				calendar.fullCalendar('unselect');
 			},
 
-			editable: true,
+			editable: false,
 			events: [
 				{% for avail in avail_date %}
 				{
 					title: '{{avail.name}}',
-					start: new Date(2013, {{avail.start|date:'m'|add:"-1"}}, {{avail.start|date:'d'}}),
-					end:  new  Date(2013, {{avail.end|date:'m'|add:"-1"}}, {{avail.end|date:'d'}})
+					start: new Date({{avail.start|date:'Y'}}, {{avail.start|date:'m'|add:"-1"}}, {{avail.start|date:'d'}}),
+					end:  new  Date({{avail.start|date:'Y'}}, {{avail.end|date:'m'|add:"-1"}}, {{avail.end|date:'d'}})
+				
 				},
 				{% endfor %}
 				{
