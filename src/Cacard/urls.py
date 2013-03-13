@@ -16,7 +16,6 @@ urlpatterns = patterns('calling_card.views',
     url(r'^customer/$', 'customer', name='customer'),
     url(r'^customer/(?P<select>\d{1,4})/$', 'customer', name='paged_customer'),
     url(r'^news/$', 'news', name='news'),
-    url(r'^order/(?P<st_year>\d{4})/(?P<st_month>\d{1,2})/(?P<st_day>\d{1,2})/(?P<end_year>\d{4})/(?P<end_month>\d{1,2})/(?P<end_day>\d{1,2})/(?P<name>\w+)/$', 'order', name='order'),
     url(r'^order/$', 'order', name='order'),
 
     # url(r'^Cacard/', include('Cacard.foo.urls')),

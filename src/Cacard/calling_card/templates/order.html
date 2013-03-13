@@ -26,10 +26,12 @@
 			selectable: true,
 			selectHelper: true,
 			select: function(start, end, allDay) {
-				var title = prompt('Enter your name:');
-				if (title) {
-					window.location.replace("/order/"+start.getFullYear()+"/"+start.getMonth()+"/"+start.getDate()+"/"+
-					end.getFullYear()+"/"+end.getMonth()+"/"+end.getDate()+"/"+title); 
+				var name = prompt('Enter your name:');
+				if (name) {
+					$("input[name='name']").val(name);
+					$("input[name='start']").val(start.getDate()+'/'+start.getMonth()+'/'+start.getFullYear());
+                    $("input[name='end']").val(end.getDate()+'/'+end.getMonth()+'/'+end.getFullYear());
+					
 					
 				}
 				calendar.fullCalendar('unselect');
@@ -72,11 +74,31 @@
 {% endblock %}
 
 {% block content %}
-<h2> {% trans "Please select time" %}</h2>
+<center><h2> {% trans "Please make your order" %}</h2> </center>
+<br>
 
-<div id='calendar' class="row">
-  <div class="span8">
-  </div>	
+<div id='calendar_cont' class="row">
+  <div class="span6">
+   <div id='calendar'>
+   </div>	
+  </div>
+  <div class="span2">
+   <h4> {% trans "Desired time:" %}</h4>
+     <form action="" method="post">
+       {% csrf_token %}
+   <div class="field">
+           <label for="name">{% trans "Your name:" %}</label>
+           <input type="text" name ="name" id="name" />
+           <label for="start">{% trans "Begin (dd/mm/yyyy)" %}</label>
+           <input type="text" name ="start" id="start" />
+           <label for="end">{% trans "End day (dd/mm/yyyy)" %}</label>
+           <input type="text" name ="end" id="end" />
+
+   </div>
+   <input type="submit" value="Заказать">
+	
+  </div>
+  
 </div>
 
 
