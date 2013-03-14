@@ -155,13 +155,12 @@ def order(request):
                   'end':datetime.datetime.today()+datetime.timedelta(days=2),
                   'name':'Event 1'}]
 #TODO: need check data from request!!!
-#TODO: js return month as month-1, in form i need add 1 to value
     if request.method == 'POST':
         st_day, st_month, st_year = request.POST['start'].split('/')
         end_day, end_month, end_year = request.POST['end'].split('/')
         name = request.POST['name']
-        avail_date.append({'start':datetime.datetime(int(st_year), int(st_month)+1, int(st_day)),
-                  'end':datetime.datetime(int(end_year), int(end_month)+1, int(end_day)),
+        avail_date.append({'start':datetime.datetime(int(st_year), int(st_month), int(st_day)),
+                  'end':datetime.datetime(int(end_year), int(end_month), int(end_day)),
                   'name':name})
 
     return {'avail_date':avail_date}

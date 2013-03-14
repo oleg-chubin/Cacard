@@ -29,8 +29,8 @@
 				var name = prompt('Enter your name:');
 				if (name) {
 					$("input[name='name']").val(name);
-					$("input[name='start']").val(start.getDate()+'/'+start.getMonth()+'/'+start.getFullYear());
-                    $("input[name='end']").val(end.getDate()+'/'+end.getMonth()+'/'+end.getFullYear());
+					$("input[name='start']").val(start.getDate()+'/'+parseInt(start.getMonth()+1)+'/'+start.getFullYear());
+                    $("input[name='end']").val(end.getDate()+'/'+parseInt(end.getMonth()+1)+'/'+end.getFullYear());
 					
 					
 				}
@@ -83,19 +83,24 @@
    </div>	
   </div>
   <div class="span2">
-   <h4> {% trans "Desired time:" %}</h4>
-     <form action="" method="post">
-       {% csrf_token %}
-   <div class="field">
+  	
+  	<form action="" method="post">
+  		{% csrf_token %}
+        </br>
+        </br>
+        <fieldset>
+         <legend>{% trans "Desired time:" %}</legend>
            <label for="name">{% trans "Your name:" %}</label>
            <input type="text" name ="name" id="name" />
-           <label for="start">{% trans "Begin (dd/mm/yyyy)" %}</label>
-           <input type="text" name ="start" id="start" />
-           <label for="end">{% trans "End day (dd/mm/yyyy)" %}</label>
-           <input type="text" name ="end" id="end" />
+           <label for="start">{% trans "Begin:" %}</label>
+           <input type="text" name ="start" id="start" placeholder="dd/mm/yyyy"/>
+           <label for="end">{% trans "End day:" %}</label>
+           <input type="text" name ="end" id="end" placeholder="dd/mm/yyyy" />
+           <button type="submit" class="btn">{% trans "Check!" %}</button>
+         </fieldset>
+    </form>
+  	
 
-   </div>
-   <input type="submit" value="Заказать">
 	
   </div>
   
