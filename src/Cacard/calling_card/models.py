@@ -103,6 +103,7 @@ class InfoImage(models.Model):
 def resize_uploaded_image(initial_image, max_size):
     thumb_file = initial_image
     parser = ImageFile.Parser()
+    thumb_file.seek(0)
     portion = thumb_file.read(PORTION_SIZE)
     while portion:
         parser.feed(portion)
