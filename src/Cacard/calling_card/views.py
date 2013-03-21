@@ -3,8 +3,9 @@
 from googlemaps import GoogleMaps
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from models import News, Product, Brand, ConsumerInfo
+from models import News, Product, Brand, ConsumerInfo, DateRule, OrderProduct
 from models import ConsumerCategory, ProductCategory, Address
+from models import DesiredDate, ReservedDate
 from forms import ConsumerFeedback
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from operator import itemgetter
@@ -149,19 +150,28 @@ def admin(request):
 
 
 @render_to("order.html")
-@top_level_menu("Contacts", "contacts", 6)
-def order(request):
-    avail_date = [{'start':datetime.datetime.today()+datetime.timedelta(days=2),
-                  'end':datetime.datetime.today()+datetime.timedelta(days=2),
-                  'name':'Event 1'}]
-#TODO: need check data from request!!!
+@top_level_menu("Products", "product", 3)
+def order(request, brand_id='0', prod='0'):
+    desire_date = []
     if request.method == 'POST':
         st_day, st_month, st_year = request.POST['start'].split('/')
         end_day, end_month, end_year = request.POST['end'].split('/')
         name = request.POST['name']
-        avail_date.append({'start':datetime.datetime(int(st_year), int(st_month), int(st_day)),
-                  'end':datetime.datetime(int(end_year), int(end_month), int(end_day)),
-                  'name':name})
-
-    return {'avail_date':avail_date}
-
+        desire = DesiredDate()
+        desire.order_product = OrderProduct.objects.filter(product=prod)[0]
+        desire.save()
+        drr = DateRule(start_date=datetime.datetime(int(st_year), int(st_month), int(st_day)).replace(tzinfo=timezone.utc),
+                     end_date=datetime.datetime(int(end_year), int(end_month), int(end_day)).replace(tzinfo=timezone.utc),
+                     period=1, is_available=False, priority=25,
+                     duration_discreteness=1, common_date=desire)
+        drr.save()
+        desire_date.append({'start': datetime.datetime(int(st_year), int(st_month), int(st_day)).replace(tzinfo=timezone.utc),
+                  'end': datetime.datetime(int(end_year), int(end_month), int(end_day)).replace(tzinfo=timezone.utc),
+                  'name': name})
+    reserve_set = DateRule.objects.filter(common_date__reserveddate__order_product__product=prod)
+    reserv_date = []
+    for data in reserve_set:
+        reserv_date.append({'start': data.start_date,
+                  'end': data.end_date,
+                  'name': 'reserved'})
+    return {'reserv_date': reserv_date, 'desire_date': desire_date}

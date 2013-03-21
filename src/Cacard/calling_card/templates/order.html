@@ -47,23 +47,23 @@
 				
 				},
 				{% endfor %}
+				{% for avail in reserv_date %}
 				{
-					title: 'Meeting',
-					start: new Date(y, m, d, 10, 30),
-					allDay: false
+					title: '{{avail.name}}',
+					start: new Date({{avail.start|date:'Y'}}, {{avail.start|date:'m'|add:"-1"}}, {{avail.start|date:'d'}}),
+					end:  new  Date({{avail.start|date:'Y'}}, {{avail.end|date:'m'|add:"-1"}}, {{avail.end|date:'d'}})
+				
 				},
+				{% endfor %}
+				{% for avail in desire_date %}
 				{
-					title: 'Lunch',
-					start: new Date(y, m, d, 12, 0),
-					end: new Date(y, m, d, 14, 0),
-					allDay: false
+					title: '{{avail.name}}',
+					start: new Date({{avail.start|date:'Y'}}, {{avail.start|date:'m'|add:"-1"}}, {{avail.start|date:'d'}}),
+					end:  new  Date({{avail.start|date:'Y'}}, {{avail.end|date:'m'|add:"-1"}}, {{avail.end|date:'d'}})
+				
 				},
-				{
-					title: 'Click for Home',
-					start: new Date(y, m, 28),
-					end: new Date(y, m, 29),
-					url: '/'
-				}
+				{% endfor %}
+
 			]
 		});
 		

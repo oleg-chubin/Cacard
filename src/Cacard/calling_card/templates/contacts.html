@@ -6,11 +6,6 @@
 <div id="contacts">
 
       <h2> {% trans "Contacts" %} </h2>
-  <div id="make_order">
-	<p>
-	 <a href="/order" class="btn btn-primary"><i class="icon-pencil icon-white"></i>{% trans " Online Order" %}</a>	
-	</p>
-  </div>
 
       {% for item in contacts %}
         <h3>{{ item.contact.address_type }}</h3>

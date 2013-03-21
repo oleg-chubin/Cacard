@@ -16,7 +16,8 @@ urlpatterns = patterns('calling_card.views',
     url(r'^customer/$', 'customer', name='customer'),
     url(r'^customer/(?P<select>\d{1,4})/$', 'customer', name='paged_customer'),
     url(r'^news/$', 'news', name='news'),
-    url(r'^order/$', 'order', name='order'),
+    url(r'^order/(?P<brand_id>\d{1,4})/(?P<prod>\d{1,4})/$', 'order', name='order'),
+#   url(r'^order_confirm/(?P<brand_id>\d{1,4})/(?P<prod>\d{1,4})/$', 'order_confirm', name='order_confirm'),
 
     # url(r'^Cacard/', include('Cacard.foo.urls')),
 

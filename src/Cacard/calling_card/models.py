@@ -51,6 +51,7 @@ class DesiredDate(CommonDate):
 
 class ReservedDate(CommonDate):
     order_product = models.ForeignKey(OrderProduct)
+    name_of_reserv = models.TextField()
 
 
 class AvailableDate(CommonDate):

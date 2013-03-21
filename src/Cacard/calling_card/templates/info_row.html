@@ -22,7 +22,10 @@
     {% if need_url %}
       {% include urled_page %}
     {% else %}
-      <h3>{{ info_item.title }}</h3>
+      <h3>{{ info_item.title }}             
+	    <a href="/order/{{info_item.brand.id}}/{{info_item.id}}" class="btn btn-primary"><i class="icon-pencil icon-white"></i>{% trans " Online Order" %}</a>	
+      </h3>
+
     {% endif %}
 
     <h4>{{ info_item.brand }}</h4>
@@ -43,7 +46,7 @@
     </div>
     {% block extra_info_details %}
     {% endblock extra_info_details %}
-  </div>
+   </div>
 </div>
 </div>
 
